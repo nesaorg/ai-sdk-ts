@@ -1,0 +1,1 @@
+{"version":3,"file":"types.js","sourceRoot":"","sources":["../../src/chains/types.ts"],"names":[],"mappings":"","sourcesContent":["import { ChainInfo as ChainInfoKeplr } from '@keplr-wallet/types';\nimport { ChainInfo as ChainInfoLeap } from '@leapwallet/cosmos-snap-provider';\n\nexport type ChainInfo = ChainInfoKeplr | ChainInfoLeap;\n"]}

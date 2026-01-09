@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+package dht.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "dht/v1/params.proto";
+import "dht/v1/node.proto";
+import "dht/v1/miner.proto";
+import "dht/v1/model.proto";
+import "dht/v1/orchestrator.proto";
+import "dht/v1/reputation.proto";
+
+option go_package = "github.com/nesaorg/nesachain/x/dht/types";
+
+// Query defines the gRPC querier service.
+service Query {
+
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/nesachain/dht/params";
+  }
+
+  // GetModel queries a list of GetModel items.
+  rpc GetModel(QueryGetModelRequest) returns (QueryGetModelResponse) {
+    option (google.api.http).get = "/nesachain/dht/get_model/{model_name}";
+  }
+
+  // Models queries a list of model items.
+  rpc Models(QueryModelsRequest) returns (QueryModelsResponse) {
+    option (google.api.http).get = "/nesachain/dht/models";
+  }
+
+  // Queries a list of GetNode items.
+  rpc GetNode(QueryGetNodeRequest) returns (QueryGetNodeResponse) {
+    option (google.api.http).get = "/nesachain/dht/get_node/{node_id}";
+  }
+
+  // Queries a list of GetMiner items.
+  rpc GetMiner(QueryGetMinerRequest) returns (QueryGetMinerResponse) {
+    option (google.api.http).get = "/nesachain/dht/get_miner/{node_id}";
+  }
+
+  // Queries a list of GetOrchestrator items.
+  rpc GetOrchestrator(QueryGetOrchestratorRequest)
+      returns (QueryGetOrchestratorResponse) {
+    option (google.api.http).get =
+        "/nesachain/dht/get_orchestrator/{node_id}";
+  }
+
+  // GetAllOrchestrator queries a list of GetAllOrchestrator items.
+  rpc GetAllOrchestrator(QueryGetAllOrchestratorRequest)
+      returns (QueryGetAllOrchestratorResponse) {
+    option (google.api.http).get = "/nesachain/dht/get_orchestrators";
+  }
+
+  // GetOrchestratorsByParams queries a list of GetOrchestratorsByParams items.
+  rpc GetOrchestratorsByParams(QueryGetOrchestratorsByParamsRequest)
+      returns (QueryGetOrchestratorsByParamsResponse) {
+    option (google.api.http).get = "/nesachain/dht/get_orchestrators_by_params/{inference_type}";
+  }
+
+  // ReputationParams queries the reputation parameters.
+  rpc ReputationParams(QueryReputationParamsRequest)
+      returns (QueryReputationParamsResponse) {
+    option (google.api.http).get = "/nesachain/dht/reputation_params";
+  }
+
+  // ModelConfig queries the model configuration.
+  rpc ModelConfig(QueryModelConfigRequest)
+      returns (QueryModelConfigResponse) {
+    option (google.api.http).get = "/nesachain/dht/model_config/{model_name}";
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
+}
+
+// QueryGetModelRequest is request type for the Query/Model RPC method.
+message QueryGetModelRequest {
+  string model_name = 1;
+}
+
+// QueryGetModelResponse is response type for the Query/Model RPC method.
+message QueryGetModelResponse {
+  DisplayModel model = 1;
+}
+
+// QueryModelsRequest is request type for the Query/Models RPC method.
+message QueryModelsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+};
+
+// QueryModelsResponse is response type for the Query/Models RPC method.
+message QueryModelsResponse {
+  repeated DisplayModel models = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetNodeRequest is request type for the Query/GetNode RPC method.
+message QueryGetNodeRequest { string node_id = 1; }
+
+// QueryGetNodeResponse is response type for the Query/GetNode RPC method.
+message QueryGetNodeResponse { Node node = 1; }
+
+// QueryGetMinerRequest is request type for the Query/GetMiner RPC method.
+message QueryGetMinerRequest { string node_id = 1; }
+
+// QueryGetMinerResponse is response type for the Query/GetMiner RPC method.
+message QueryGetMinerResponse {
+  Miner miner = 1;
+  Node node = 2;
+}
+
+// QueryGetOrchestratorRequest is request type for the Query/GetOrchestrator RPC method.
+message QueryGetOrchestratorRequest { string node_id = 1; }
+
+// QueryGetOrchestratorResponse is response type for the Query/GetOrchestrator RPC method.
+message QueryGetOrchestratorResponse {
+  Orchestrator orchestrator = 1;
+  Node node = 2;
+}
+
+// QueryGetOrchestratorsByParamsRequest is request type for the Query/GetOrchestratorsByParams RPC method.
+message QueryGetOrchestratorsByParamsRequest {
+  InferenceType inference_type = 1;
+  Availability availability = 2;
+  uint32 limit = 3;
+  bytes key = 4;
+}
+
+// QueryGetOrchestratorsByParamsResponse is response type for the Query/GetOrchestratorsByParams RPC method.
+message QueryGetOrchestratorsByParamsResponse {
+  repeated Orchestrator orchestrators = 1;
+  bytes next_key = 2;
+}
+
+// QueryGetAllOrchestratorRequest is request type for the Query/GetAllOrchestrator RPC method.
+message QueryGetAllOrchestratorRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+};
+
+// QueryGetAllOrchestratorResponse is response type for the Query/GetAllOrchestrator RPC method.
+message QueryGetAllOrchestratorResponse {
+  repeated Orchestrator orchestrators = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryReputationParamsRequest is request type for the Query/ReputationParams RPC method.
+message QueryReputationParamsRequest {}
+
+// QueryReputationParamsResponse is response type for the Query/ReputationParams RPC method.
+message QueryReputationParamsResponse {
+  ReputationParams params = 1
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
+}
+
+// QueryModelConfigRequest is request type for the Query/ModelConfig RPC method.
+message QueryModelConfigRequest {
+  string model_name = 1;
+}
+
+// QueryModelConfigResponse is response type for the Query/ModelConfig RPC method.
+message QueryModelConfigResponse {
+  ModelConfig config = 1
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
+}
+
+// DisplayModel defines a model
+message DisplayModel {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.stringer)        = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string creator = 1;
+  string model_name = 2;
+  TokenPrice token_price = 4 [(gogoproto.nullable) = false];
+  repeated string s_window = 5  [(gogoproto.nullable) = false];
+
+  reserved 3;
+}

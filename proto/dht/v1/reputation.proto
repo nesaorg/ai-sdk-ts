@@ -1,0 +1,293 @@
+syntax = "proto3";
+package dht.v1;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/nesaorg/nesachain/x/dht/types";
+
+message Reputation {
+  string name = 1;
+  int64 score = 2;
+}
+
+// ReputationParams defines parameters for the reputation system
+message ReputationParams {
+  option (gogoproto.equal) = true;
+  // Reputation equation parameters
+  // Completion reliability weight
+  string alpha = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Performance weight
+  string beta = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Efficiency score weight
+  string w_s = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Time penalty weight
+  string lambda = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string gamma = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string delta = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Rew(default: 1.01)
+  string reward_multiplier = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Pen_timeout(default: 0.8)
+  string penalty_multiplier_timeout = 8 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Sigmoid reward function parameters (Ar, Br, Cr, Dr)
+  // Reward sigmoid function parameter A (default: 1)
+  string ar = 9 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Reward sigmoid function parameter B (default: 8)
+  string br = 10 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Reward sigmoid function parameter C (default: 3.5)
+  string cr = 11 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Reward sigmoid function parameter D (default: 0.010987)
+  string dr = 12 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  // Sigmoid penalty function parameters (Ap, Bp, Cp, Dp)
+  // Penalty sigmoid function parameter A (default: 0.1)
+  string ap = 13 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Penalty sigmoid function parameter B (default: 8)
+  string bp = 14 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Penalty sigmoid function parameter C (default: 3.5)
+  string cp = 15 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Penalty sigmoid function parameter D (default: 0.010987)
+  string dp = 16 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  // Fee distribution parameters
+  // Nesa min distribution percentage (default: 0.1 = 10%)
+  string min_nesa_percent = 17 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Agent distribution percentage (default: 0.1 = 10%)
+  string agent_percent = 18 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Max miner distribution percentage (default: 0.8 = 80%)
+  string max_miner_percent = 19 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Reputation reward percentage (default: 0.2 = 20%)
+  string reputation_reward_percent = 20 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  // Boundaries and factors
+  // Max catch-up reward
+  string catch_up_cap = 22 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Min reputation value
+  string r_min = 23 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Max reputation value
+  string r_max = 24 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Timeout threshold multiplier
+  string timeout_factor = 25 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Non-response threshold multiplier
+  string non_response_factor = 26 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  // Model coefficients
+  // Input size time coefficient
+  string k1 = 27 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Output size time coefficient
+  string k2 = 28 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Min execution time
+  string min_time = 29 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Max execution time
+  string max_time = 30 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  // Window and validation
+  uint32 s_window_per_model = 31;
+  bool validation_enabled = 32;
+  // Default validation score
+  string v_default = 33 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Revenue account addresses(a pool reserved for platform development (PDP))
+  string nesa_pdp_account = 34
+      [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  // Min penalty amount
+  cosmos.base.v1beta1.Coin min_penalty_amount = 35 [
+    (gogoproto.nullable) = false
+  ];
+  // Base penalty amount
+  cosmos.base.v1beta1.Coin base_penalty_amount = 36 [
+    (gogoproto.nullable) = false
+  ];
+
+  uint64 catch_up_power = 37;
+  string catch_up_stop_at = 38 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+// RequestLog is a log of a request to a miner.
+message RequestLog {
+  string request_id = 1;
+  string miner_id = 2;
+  string model_name = 3;
+  uint64 input_tokens = 4;
+  uint64 output_tokens = 5;
+  uint64 actual_time = 6;
+  string avg_execution_time = 7 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string e_time = 8 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string s_raw = 9 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string s = 10 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string s_min = 11 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string s_max = 12 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string s_rolling_after = 13 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  uint32 m = 14;
+  string r_before = 15 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string r_after = 16 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  google.protobuf.Timestamp timestamp = 17
+      [ (gogoproto.nullable) = false, (gogoproto.stdtime) = true ];
+  string t_norm = 18 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  string catch_up_factor = 19 [
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin inference_fee = 20 [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin miner_reward = 21 [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin nesa_reward = 22 [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin agent_reward = 23 [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin miner_penalty = 24 [ (gogoproto.nullable) = false ];
+  bool non_response = 25;
+  string session_id = 26;
+}

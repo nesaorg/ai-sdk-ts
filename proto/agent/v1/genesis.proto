@@ -1,0 +1,21 @@
+syntax = "proto3";
+package agent.v1;
+
+option go_package = "github.com/nesaorg/nesachain/x/agent/types";
+
+import "gogoproto/gogo.proto";
+import "agent/v1/agent.proto";
+
+// GenesisState defines the agent module's genesis state.
+message GenesisState {
+  // Params defines the parameters of the module.
+  Params params = 1 [ (gogoproto.nullable) = false ];
+  // InnerValues defines the inner values of the module
+  InnerValues inner_values = 2 [ (gogoproto.nullable) = false ];
+  // Agents defines the agents of the module
+  repeated InferenceAgent agents = 3 [ (gogoproto.nullable) = false ];
+  // Sessions defines the sessions of the module
+  repeated Session sessions = 4 [ (gogoproto.nullable) = false ];
+  // VrfSeeds defines the VRF seeds of the module
+  repeated VrfSeed vrf_seeds = 5 [ (gogoproto.nullable) = false ];
+}

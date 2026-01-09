@@ -1,0 +1,21 @@
+syntax = "proto3";
+package agent.v1;
+
+option go_package = "github.com/nesaorg/nesachain/x/agent/types";
+
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+// EventRewardDistribution defines the reward distribution event
+message EventRewardDistribution {
+  cosmos.base.v1beta1.Coin total_amount = 1 [ (gogoproto.nullable) = false ];
+  repeated Reward rewards = 2 [ (gogoproto.nullable) = false ];
+}
+
+// Reward defines the reward information for a specific miner.
+message Reward {
+  string account = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  cosmos.base.v1beta1.Coin amount = 2 [ (gogoproto.nullable) = false ];
+  uint64 rate = 3;
+}

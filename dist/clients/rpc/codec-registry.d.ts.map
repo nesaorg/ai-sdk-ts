@@ -1,0 +1,1 @@
+{"version":3,"file":"codec-registry.d.ts","sourceRoot":"","sources":["../../../src/clients/rpc/codec-registry.ts"],"names":[],"mappings":"AAAA;;;GAGG;AACH,OAAO,EAAE,QAAQ,EAAE,aAAa,EAAE,MAAM,uBAAuB,CAAC;AAgBhE;;;GAGG;AACH,eAAO,MAAM,YAAY,EAAE,aAAa,CAAC,CAAC,MAAM,EAAE,aAAa,CAAC,CAgB/D,CAAC;AAEF;;;;;;;;;;;;;;;;;GAiBG;AACH,wBAAgB,WAAW,IAAI,QAAQ,CAMtC"}

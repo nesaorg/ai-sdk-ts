@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package agent.v1;
+
+option go_package = "github.com/nesaorg/nesachain/x/agent/types";
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos_proto/cosmos.proto";
+import "agent/v1/agent.proto";
+import "google/protobuf/timestamp.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Parameters queries the parameters of the module.
+    rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+        option (google.api.http).get = "/agent/v1/params";
+    }
+    // Queries a list of InferenceAgent items.
+    rpc InferenceAgentRequest(QueryInferenceAgentRequest) returns (QueryInferenceAgentResponse) {
+        option (google.api.http).get = "/agent/v1/inference_agent/{account}";
+    }
+    // Queries a list of InferenceAgent items.
+    rpc InferenceAgentsRequest(QueryInferenceAgentsRequest)
+        returns (QueryInferenceAgentsResponse) {
+      option (google.api.http).get = "/agent/v1/inference_agent";
+    }
+    // Queries a list of Session items.
+    rpc SessionRequest(QuerySessionRequest) returns (QuerySessionResponse) {
+        option (google.api.http).get = "/agent/v1/session/{id}";
+    }
+    // Queries a list of Session items.
+    rpc SessionByAgentRequest(QuerySessionByAgentRequest) returns (QuerySessionByAgentResponse) {
+        option (google.api.http).get = "/agent/v1/sessions/agent/{account}";
+    }
+    // Queries a list of VRFSeed items.
+    rpc VRFSeedRequest(QueryVRFSeedRequest) returns (QueryVRFSeedResponse) {
+        option (google.api.http).get = "/agent/v1/vrf_seed/{account}";
+    }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params defines the parameters of the module.
+  Params params = 1;
+}
+
+// QueryInferenceAgentRequest is request type for the Query/InferenceAgent RPC method.
+message QueryInferenceAgentRequest {
+    string account = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+}
+
+// QueryInferenceAgentResponse is response type for the Query/InferenceAgent RPC method.
+message QueryInferenceAgentResponse {
+    InferenceAgent inference_agent = 1;
+}
+
+// QueryInferenceAgentsRequest is request type for the Query/InferenceAgents RPC method.
+message QueryInferenceAgentsRequest {
+  uint64 limit = 1;
+  bytes key = 2;
+}
+
+// QueryInferenceAgentsResponse is response type for the Query/InferenceAgents RPC method.
+message QueryInferenceAgentsResponse {
+  repeated InferenceAgent inference_agents = 1;
+  bytes next_key = 2;
+}
+
+// QuerySessionRequest is request type for the Query/Session RPC method.
+message QuerySessionRequest {
+    string id = 1;
+}
+
+// QuerySessionResponse is response type for the Query/Session RPC method.
+message QuerySessionResponse {
+    Session session = 1;
+}
+
+// QuerySessionByAgentRequest is request type for the Query/SessionByAgent RPC method.
+message QuerySessionByAgentRequest {
+    string account = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+    SessionStatus status = 2  [(gogoproto.nullable) = true];
+    google.protobuf.Timestamp expire_time = 3 [ (gogoproto.stdtime) = true, (gogoproto.nullable) = false ];
+    uint64 limit = 4;
+    bool order_desc = 5;
+    bytes key = 6;
+}
+
+// QuerySessionByAgentResponse is response type for the Query/SessionByAgent RPC method.
+message QuerySessionByAgentResponse {
+    repeated Session sessions = 1;
+    bytes next_key = 2;
+}
+
+// QueryVRFSeedRequest is request type for the Query/VRFSeed RPC method.
+message QueryVRFSeedRequest {
+    string account = 1;
+}
+
+// QueryVRFSeedResponse is response type for the Query/VRFSeed RPC method.
+message QueryVRFSeedResponse {
+    bytes seed = 1;
+}

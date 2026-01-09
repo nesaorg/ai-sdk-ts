@@ -1,0 +1,104 @@
+{
+  "name": "@nesaorg/ai-sdk",
+  "version": "1.2.0",
+  "license": "MIT",
+  "author": "Nesa Labs, Inc. <hi@nesa.ai> (https://nesa.ai)",
+  "description": "A TypeScript-based SDK for interacting with the Nesa AI Platform via web and node environments, providing a robust interface for managing AI sessions and sending inference requests to over 100,000 AI Models.",
+  "keywords": [
+    "nesa",
+    "private",
+    "ai",
+    "inference",
+    "sdk"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nesaorg/ai-sdk-ts"
+  },
+  "bugs": {
+    "url": "https://github.com/nesaorg/ai-sdk-ts/issues"
+  },
+  "homepage": "https://github.com/nesaorg/ai-sdk-ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "gen:proto": "rimraf ./src/clients/rpc/codec && bun ./scripts/codegen.cjs",
+    "fix:proto-imports": "find src -type f -name \"*.ts\" -print0 | xargs -0 perl -pi -e 's@import \\*\\s+as\\s+_m0\\s+from\\s+\"protobufjs/minimal\";@import _m0 from \"protobufjs/minimal\";@g'",
+    "gen:barrel": "barrelsby --directory src --delete --exclude \"\\.d\\.ts$\" --exclude \"./clients/rpc/codec/index\" --exclude \"./test\"",
+    "fix:barrel-ext": "find src/index.ts -type f \\( -name '*.ts' -o -name '*.tsx' \\) -print0 | xargs -0 perl -pi -e \"s@(\\bfrom\\s+['\\\"])(\\.{1,2}/[^'\\\"]+?)(?<!\\.(?:js|ts|json))(['\\\"])@\\1\\2.js\\3@g\"",
+    "fix:src-rel-ext": "find src -type f \\( -name '*.ts' -o -name '*.tsx' \\) -print0 | xargs -0 perl -pi -e \"s@(\\bfrom\\s+['\\\"])(\\.{1,2}/[^'\\\"]+?)(?<!\\.(?:js|ts|json))(['\\\"])@\\1\\2.js\\3@g\"",
+    "lint": "eslint 'src/**/*.{ts,js}'",
+    "format": "prettier --write .",
+    "build": "bun run clean && bun run gen:proto && bun run fix:proto-imports && bun run gen:barrel && bun run fix:barrel-ext && bun run fix:src-rel-ext && bun run lint && bun run format && mkdir -p dist && tsc --project tsconfig.json",
+    "fix:protobufjs": "find dist -type f -name '*.js' -print0 | xargs -0 perl -pi -e \"s|\\bfrom\\s+(['\\\"])protobufjs/minimal(?<!\\.js)(['\\\"])|from \\1protobufjs/minimal.js\\2|g\"",
+    "postbuild": "bun run fix:protobufjs"
+  },
+  "devDependencies": {
+    "@cosmology/telescope": "^1.12.20",
+    "@types/bn.js": "^5.1.6",
+    "@types/bun": "latest",
+    "@types/crypto-js": "^4.2.2",
+    "@types/debug": "^4.1.12",
+    "@types/elliptic": "^6.4.18",
+    "@types/isomorphic-fetch": "^0.0.39",
+    "@types/minimatch": "^6.0.0",
+    "@types/node": "^22.15.29",
+    "@types/node-fetch": "^2.6.12",
+    "@types/ws": "^8.18.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "barrelsby": "^2.8.1",
+    "debug": "^4.4.1",
+    "dotenv": "^16.5.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.1",
+    "minimatch": "^10.1.1",
+    "prettier": "3.5.3",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@cosmjs/amino": "^0.33.1",
+    "@cosmjs/crypto": "^0.33.1",
+    "@cosmjs/encoding": "^0.33.1",
+    "@cosmjs/proto-signing": "^0.33.1",
+    "@cosmjs/stargate": "^0.33.1",
+    "@cosmjs/tendermint-rpc": "^0.33.1",
+    "@keplr-wallet/types": "^0.12.238",
+    "@leapwallet/cosmos-snap-provider": "^0.1.26",
+    "bn.js": "^5.2.2",
+    "cosmjs-types": "^0.9.0",
+    "crypto-js": "^4.2.0",
+    "elliptic": "^6.6.1",
+    "isomorphic-fetch": "^3.0.0",
+    "isomorphic-webcrypto": "^2.3.8",
+    "isomorphic-ws": "^5.0.0",
+    "js-base64": "^3.7.7",
+    "long": "^5.3.2",
+    "mitt": "^3.0.1",
+    "protobufjs": "^7.5.3",
+    "ws": "^8.18.2"
+  }
+}

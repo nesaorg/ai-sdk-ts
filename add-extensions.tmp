@@ -1,0 +1,7 @@
+find src/ -type f -name "*.ts" -print0 \
+  | xargs -0 perl -pi -e '
+    # Replace any occurrence of `from "…/something"` or `from '\''…/something'\''`
+    # where the path does NOT already end in .js, .ts, or another extension:
+    s@from\s+([\"'\''])(\.\.?\/[^\"'\'']*?)(?<!\.[jt]s)([\"'\''])@from $1$2.js$3@g;
+  '
+  

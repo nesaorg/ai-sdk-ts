@@ -1,0 +1,48 @@
+syntax = "proto3";
+package dht.v1;
+
+import "dht/v1/deposit.proto";
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "google/protobuf/timestamp.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/nesaorg/nesachain/x/dht/types";
+
+// Miner defines a miner of a model.
+message Miner {
+  string node_id = 1;
+  
+  dht.v1.BondStatus bond_status = 9;
+  cosmos.base.v1beta1.Coin deposit = 10 [ (gogoproto.nullable) = false ];
+  MinerReputation reputation = 11 [ (gogoproto.nullable) = false ];
+
+  reserved 2,3,4,5,6,7,8;
+}
+
+// MinerReputation defines the reputation state of a miner
+message MinerReputation {
+  // Reputation R
+  string reputation_value = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Cumulative reward
+  repeated cosmos.base.v1beta1.Coin cumulative_reward = 2
+      [ (gogoproto.nullable) = false ];
+  // Cumulative penalty
+  repeated cosmos.base.v1beta1.Coin cumulative_penalty = 3
+      [ (gogoproto.nullable) = false ];
+  // Rolling efficiency average
+  string s_rolling = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+  // Last active at
+  google.protobuf.Timestamp last_active_at = 5 [
+    (gogoproto.nullable) = false,
+    (gogoproto.stdtime) = true
+  ];
+}

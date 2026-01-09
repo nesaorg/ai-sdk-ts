@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    "lib": ["ES2020", "DOM"],
+    "target": "ES2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "inlineSources": true,
+    "isolatedModules": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/test/**/*", "**/*.test.ts"]
+}

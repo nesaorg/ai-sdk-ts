@@ -1,0 +1,182 @@
+syntax = "proto3";
+
+package agent.v1;
+
+option go_package = "github.com/nesaorg/nesachain/x/agent/types";
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "agent/v1/agent.proto";
+import "dht/v1/reputation.proto";
+
+// Msg defines the agent Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a method to update the params.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  // RegisterInferenceAgent defines a method to register an inference agent to the chain.
+  rpc RegisterInferenceAgent(MsgRegisterInferenceAgent)
+      returns (MsgRegisterInferenceAgentResponse);
+  // UpdateInferenceAgent defines a method to update an existing inference agent.
+  rpc UpdateInferenceAgent(MsgUpdateInferenceAgent) returns (MsgUpdateInferenceAgentResponse);
+  // RemoveInferenceAgent defines a method to remove an existing inference agent.
+  rpc RemoveInferenceAgent(MsgRemoveInferenceAgent)
+      returns (MsgRemoveInferenceAgentResponse);
+  // RegisterSession defines a method to register a session to the chain
+  rpc RegisterSession(MsgRegisterSession) returns (MsgRegisterSessionResponse);
+  // CancelSession defines a method to cancel a session
+  rpc CancelSession(MsgCancelSession) returns (MsgCancelSessionResponse);
+  // SubmitPayment defines a method to submit a payment
+  rpc SubmitPayment(MsgSubmitPayment) returns (MsgSubmitPaymentResponse);
+  // SubmitInferenceRequest defines a method to submit an inference request
+  rpc SubmitInferenceRequest(MsgSubmitInferenceRequest) returns (MsgSubmitInferenceRequestResponse);
+  // DeleteExpiredSession defines a method to delete expired session
+  rpc DeleteExpiredSession(MsgDeleteExpiredSession) returns (MsgDeleteExpiredSessionResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  Params params = 2 [(gogoproto.nullable) = false];
+}
+
+// MsgUpdateParamsResponse defines the Msg/UpdateParams response type.
+message MsgUpdateParamsResponse {}
+
+// MsgRegisterInferenceAgent is the Msg/RegisterInferenceAgent request type.
+message MsgRegisterInferenceAgent {
+  option (cosmos.msg.v1.signer) = "sender";
+
+  string account = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string url = 2 [(gogoproto.customname) = "URL"];
+  uint64 version = 3;
+  string sender = 4 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// MsgRegisterInferenceAgentResponse defines the Msg/RegisterInferenceAgent response type.
+message MsgRegisterInferenceAgentResponse {}
+
+// MsgUpdateInferenceAgent is the Msg/UpdateInferenceAgent request type.
+message MsgUpdateInferenceAgent {
+  option (cosmos.msg.v1.signer) = "sender";
+
+  string account = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string url = 2 [(gogoproto.customname) = "URL", (gogoproto.nullable) = true];
+  uint64 version = 3 [(gogoproto.nullable) = true];
+  AgentStatus status = 4 [(gogoproto.nullable) = true];
+  string sender = 5 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// MsgUpdateInferenceAgentResponse defines the Msg/UpdateInferenceAgent response type.
+message MsgUpdateInferenceAgentResponse {}
+
+// MsgRemoveInferenceAgent is the Msg/RemoveInferenceAgent request type.
+message MsgRemoveInferenceAgent {
+  option (cosmos.msg.v1.signer) = "sender";
+
+  string account = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string sender = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// MsgRemoveInferenceAgentResponse defines the Msg/RemoveInferenceAgent response type.
+message MsgRemoveInferenceAgentResponse {}
+
+// VRF is the VRF struct
+message VRF {
+  bytes seed = 1;
+  bytes proof = 2;
+  bytes hash_random = 3;
+}
+
+// MsgRegisterSession is the Msg/RegisterSession request type.
+message MsgRegisterSession {
+  option (cosmos.msg.v1.signer) = "account";
+
+  string session_id = 1;
+  string account = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string model_name = 3;
+  cosmos.base.v1beta1.Coin lock_balance = 4 [(gogoproto.nullable) = false];
+  VRF vrf = 5 [(gogoproto.nullable) = false];
+  TokenPrice token_price = 6 [(gogoproto.nullable) = false];
+}
+
+// MsgRegisterSessionResponse defines the Msg/RegisterSession response type.
+message MsgRegisterSessionResponse {
+  string account = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string model_name = 2;
+}
+
+// MsgCancelSession is the Msg/CancelSession request type.
+message MsgCancelSession {
+  option (cosmos.msg.v1.signer) = "account";
+
+  string session_id = 1;
+  string account = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// MsgCancelSessionResponse defines the Msg/CancelSession response type.
+message MsgCancelSessionResponse {}
+
+// MsgSubmitInferenceRequest is the Msg/SubmitInferenceRequest request type.
+message MsgSubmitInferenceRequest {
+  option (cosmos.msg.v1.signer) = "sender";
+
+  // request id
+  string request_id = 1;
+  // agent address
+  string sender = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // session id
+  string session_id = 3;
+  // model name
+  string model_name = 4;
+  // miner id
+  string node_id = 5;
+  // input tokens
+  uint64 input_tokens = 6;
+  // output tokens
+  uint64 output_tokens = 7;
+  // actual time
+  uint64 actual_time = 8;
+  // non response
+  bool non_response = 9;
+}
+
+// MsgSubmitInferenceRequestResponse defines the Msg/SubmitInferenceRequest response type.
+message MsgSubmitInferenceRequestResponse {
+  dht.v1.RequestLog request_log = 1 [(gogoproto.nullable) = false];
+}
+
+// MsgSubmitPayment is the Msg/SubmitPayment request type.
+message MsgSubmitPayment {
+  option (cosmos.msg.v1.signer) = "account";
+
+  string account = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string session_id = 2;
+  Payment payment = 3;
+  bytes signature = 4  [deprecated = true];
+  // Records the number of AI inference executions.
+  uint64 inference_count = 5 [ deprecated = true ];
+  // Records the total number of tokens input
+  uint64 total_input_tokens = 6 [ deprecated = true ];
+  // Records the total number of tokens output
+  uint64 total_output_tokens = 7 [ deprecated = true ];
+}
+
+// MsgSubmitPaymentResponse defines the Msg/SubmitPayment response type.
+message MsgSubmitPaymentResponse {}
+
+// MsgDeleteExpiredSession is the Msg/DeleteExpiredSession request type.
+message MsgDeleteExpiredSession {
+  option (cosmos.msg.v1.signer) = "account";
+
+  string account = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string session_id = 2;
+}
+
+// MsgDeleteExpiredSessionResponse defines the Msg/DeleteExpiredSession response type.
+message MsgDeleteExpiredSessionResponse {}

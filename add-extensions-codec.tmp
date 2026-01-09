@@ -1,0 +1,22 @@
+# From the project root:
+find src/clients/rpc/code -type f -name "*.ts" -print0 \
+  | xargs -0 perl -pi -e '
+    # 1) Convert any “import * as _m0 from 'protobufjs/minimal'” or with ".js"
+    #    into “import _m0 from 'protobufjs/minimal.js'”.
+    s{
+      ^(\s*)                       # leading whitespace (group 1)
+      import\s+\*\s+as\s+_m0\s+    # “import * as _m0 ”
+      from\s+["'"'"']protobufjs/minimal(?:\.js)?["'"'"'];?  # from "protobufjs/minimal"(.js)
+    }{
+      $1import _m0 from "protobufjs/minimal.js";
+    }xm;
+
+    # 2) Convert any “import _m0 from 'protobufjs/minimal'” into with “.js”
+    s{
+      ^(\s*)                       # leading whitespace (group 1)
+      import\s+_m0\s+
+      from\s+["'"'"']protobufjs/minimal(?:\.js)?["'"'"'];?  # from "protobufjs/minimal"(.js)
+    }{
+      $1import _m0 from "protobufjs/minimal.js";
+    }xm;
+  '
