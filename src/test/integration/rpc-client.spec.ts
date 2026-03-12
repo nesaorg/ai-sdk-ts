@@ -31,7 +31,7 @@ describe('AIClientRpc', () => {
       try {
         const signer = await signerFromMnemonic(
           TEST_CONFIG.env.mnemonic!,
-          TEST_CONFIG.chain.chainId,
+          'nesa',
         );
         const [{ address }] = await signer.getAccounts();
 
