@@ -3,6 +3,7 @@ package dht.v1;
 
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 import "dht/v1/params.proto";
 import "dht/v1/model.proto";
 import "dht/v1/node.proto";
@@ -10,6 +11,7 @@ import "dht/v1/miner.proto";
 import "dht/v1/orchestrator.proto";
 import "dht/v1/deposit.proto";
 import "dht/v1/reputation.proto";
+import "dht/v1/tge.proto";
 
 option go_package = "github.com/nesaorg/nesachain/x/dht/types";
 
@@ -19,23 +21,33 @@ message OrchestratorMiner {
   string miner_id = 2;
 }
 
+message TGEReward {
+  string address = 1;
+  cosmos.base.v1beta1.Coin reward = 2 [ (gogoproto.nullable) = false ];
+}
+
 // GenesisState defines the dht module's genesis state.
 message GenesisState {
   // params defines all the parameters of the module.
   Params params = 1
       [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
-  
+
   repeated Model model = 2 [ (gogoproto.nullable) = false ];
   repeated Node node = 3 [ (gogoproto.nullable) = false ];
   repeated Miner miner = 4 [ (gogoproto.nullable) = false ];
   repeated Orchestrator orchestrator = 5 [ (gogoproto.nullable) = false ];
-  repeated OrchestratorMiner orchestrator_miner = 6 [ (gogoproto.nullable) = false ];
-  repeated dht.v1.UnbondingEntry miner_unbonding = 8 [ (gogoproto.nullable) = false ];
-  repeated dht.v1.UnbondingEntry orchestrator_unbonding = 9 [ (gogoproto.nullable) = false ];
+  repeated OrchestratorMiner orchestrator_miner = 6
+      [ (gogoproto.nullable) = false ];
+  repeated dht.v1.UnbondingEntry miner_unbonding = 8
+      [ (gogoproto.nullable) = false ];
+  repeated dht.v1.UnbondingEntry orchestrator_unbonding = 9
+      [ (gogoproto.nullable) = false ];
   repeated string model_creators = 10;
   repeated string model_allow_list = 11;
   repeated ModelConfig model_configs = 12 [ (gogoproto.nullable) = false ];
   ReputationParams reputation_params = 13 [ (gogoproto.nullable) = false ];
+  DistributionConfig distribution_config = 14 [ (gogoproto.nullable) = false ];
+  repeated TGEReward tge_reward = 15 [ (gogoproto.nullable) = false ];
 
   reserved 7;
 }

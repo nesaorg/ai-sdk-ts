@@ -29,7 +29,6 @@ message Orchestrator {
   Availability status = 4;
   repeated uint64 block_count = 5;
   dht.v1.BondStatus bond_status = 6;
-  cosmos.base.v1beta1.Coin deposit = 7
-      [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin deposit = 7 [ (gogoproto.nullable) = false ];
   repeated Reputation reputations = 8;
 }

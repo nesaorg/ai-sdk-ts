@@ -3,8 +3,8 @@
  * Provides various methods for creating OfflineSigner instances from different key sources.
  */
 import {
-  DirectSecp256k1HdWallet,
-  DirectSecp256k1Wallet,
+  DirectEthSecp256k1HdWallet,
+  DirectEthSecp256k1Wallet,
   OfflineSigner,
 } from '@cosmjs/proto-signing';
 import { fromHex } from '@cosmjs/encoding';
@@ -58,9 +58,9 @@ interface CosmosExtensionInterface {
 export async function signerFromMnemonic(
   mnemonic: string,
   prefix: string,
-  hdPath = "m/44'/118'/0'/0/0",
+  hdPath = "m/44'/60'/0'/0/0",
 ): Promise<OfflineSigner> {
-  return DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
+  return DirectEthSecp256k1HdWallet.fromMnemonic(mnemonic, {
     prefix,
     hdPaths: [stringToPath(hdPath)],
   });
@@ -92,7 +92,7 @@ export async function signerFromPrivateKey(
   }
 
   const privKeyBytes = fromHex(hex);
-  return DirectSecp256k1Wallet.fromKey(privKeyBytes, prefix);
+  return DirectEthSecp256k1Wallet.fromKey(privKeyBytes, prefix);
 }
 
 /**

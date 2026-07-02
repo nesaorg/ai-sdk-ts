@@ -1,0 +1,31 @@
+syntax = "proto3";
+package dht.v1;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/nesaorg/nesachain/x/dht/types";
+
+// DistributionConfig defines the distribution configuration.
+message DistributionConfig {
+  // TGE end block height
+  int64 post_tge_block = 1;
+
+  // Exchange rate between USDC and NES
+  string exchange_rate = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+
+  // Exchange rate update interval (seconds), default is 60 seconds
+  int64 exchange_rate_update_interval = 3;
+
+  // Last exchange rate update time
+  google.protobuf.Timestamp last_exchange_rate_update_time = 4
+      [ (gogoproto.nullable) = false, (gogoproto.stdtime) = true ];
+
+  // Minimum claimable reward amount in USDC
+  int64 min_claim_reward = 5;
+}

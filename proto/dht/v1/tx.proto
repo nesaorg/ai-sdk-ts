@@ -11,6 +11,7 @@ import "dht/v1/params.proto";
 import "dht/v1/orchestrator.proto";
 import "dht/v1/model.proto";
 import "dht/v1/reputation.proto";
+import "dht/v1/tge.proto";
 
 option go_package = "github.com/nesaorg/nesachain/x/dht/types";
 
@@ -22,7 +23,8 @@ service Msg {
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
 
-  // UpdateModelCreatorAllowList defines a method for updating the model_creators.
+  // UpdateModelCreatorAllowList defines a method for updating the
+  // model_creators.
   rpc UpdateModelCreatorAllowList(MsgUpdateModelCreatorAllowList)
       returns (MsgUpdateModelCreatorAllowListResponse);
 
@@ -55,30 +57,42 @@ service Msg {
   // RegisterOrchestrator defines a method for registering a new orchestrator.
   rpc RegisterOrchestrator(MsgRegisterOrchestrator)
       returns (MsgRegisterOrchestratorResponse);
-  
+
   // DeleteOrchestrator defines a method for deleting an existing orchestrator.
-  rpc DeleteOrchestrator(MsgDeleteOrchestrator) returns (MsgDeleteOrchestratorResponse);
+  rpc DeleteOrchestrator(MsgDeleteOrchestrator)
+      returns (MsgDeleteOrchestratorResponse);
 
   // AddMinerDeposit defines a method for depositing tokens to the miner.
   rpc AddMinerDeposit(MsgAddMinerDeposit) returns (MsgAddMinerDepositResponse);
   // WithdrawMiner defines a method for withdrawing tokens from the miner.
   rpc WithdrawMiner(MsgWithdrawMiner) returns (MsgWithdrawMinerResponse);
-  // AddOrchestratorDeposit defines a method for depositing tokens to the orchestrator.
+  // AddOrchestratorDeposit defines a method for depositing tokens to the
+  // orchestrator.
   rpc AddOrchestratorDeposit(MsgAddOrchestratorDeposit)
       returns (MsgAddOrchestratorDepositResponse);
-  // WithdrawOrchestrator defines a method for withdrawing tokens from the orchestrator.
+  // WithdrawOrchestrator defines a method for withdrawing tokens from the
+  // orchestrator.
   rpc WithdrawOrchestrator(MsgWithdrawOrchestrator)
       returns (MsgWithdrawOrchestratorResponse);
 
   // TODO optimize and streamline interfaces
   // UpdateNodeLabel defines a method for updating the node label.
   rpc UpdateNodeLabel(MsgUpdateNodeLabel) returns (MsgUpdateNodeLabelResponse);
-  // UpdateOrchestratorReputation defines a method for updating the orchestrator reputation.
+  // UpdateOrchestratorReputation defines a method for updating the orchestrator
+  // reputation.
   rpc UpdateOrchestratorReputation(MsgUpdateOrchestratorReputation)
       returns (MsgUpdateOrchestratorReputationResponse);
 
   // SetReputationParams defines a method for setting the reputation parameters.
-  rpc SetReputationParams(MsgSetReputationParams) returns (MsgSetReputationParamsResponse);
+  rpc SetReputationParams(MsgSetReputationParams)
+      returns (MsgSetReputationParamsResponse);
+
+  // ClaimTGEReward defines a method for claiming TGE reward.
+  rpc ClaimTGEReward(MsgClaimTGEReward) returns (MsgClaimTGERewardResponse);
+
+  // SetDistributionConfig defines a method for setting distribution config.
+  rpc SetDistributionConfig(MsgSetDistributionConfig)
+      returns (MsgSetDistributionConfigResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -88,7 +102,7 @@ message MsgUpdateParams {
 
   // authority is the address that controls the module (defaults to x/gov unless
   // overwritten).
-  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string authority = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
 
   // params defines the module parameters to update.
 
@@ -105,7 +119,7 @@ message MsgUpdateParamsResponse {}
 message MsgRegisterModel {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string model_name = 2;
   repeated string allow_list = 4;
   TokenPrice token_price = 5 [ (gogoproto.nullable) = true ];
@@ -160,10 +174,10 @@ message MsgRegisterNode {
 message MsgRegisterNodeResponse {}
 
 // MsgDeleteNode is the Msg/DeleteNode request type.
-message MsgDeleteNode{
+message MsgDeleteNode {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string node_id = 2;
 }
 
@@ -186,7 +200,7 @@ message MsgRegisterMinerResponse {}
 message MsgUpdateMiner {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string node_id = 2;
   // Reputation R
   string reputation_value = 3 [
@@ -215,7 +229,7 @@ message MsgUpdateMinerResponse {}
 message MsgDeleteMiner {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string node_id = 2;
 }
 
@@ -235,8 +249,8 @@ message MsgRegisterOrchestrator {
   string model_name = 7;
 }
 
-// MsgRegisterOrchestratorResponse defines the response structure for executing a
-// MsgRegisterOrchestrator message.
+// MsgRegisterOrchestratorResponse defines the response structure for executing
+// a MsgRegisterOrchestrator message.
 message MsgRegisterOrchestratorResponse {}
 
 // MsgDeleteOrchestrator is the Msg/DeleteOrchestrator request type.
@@ -250,7 +264,6 @@ message MsgDeleteOrchestrator {
 // MsgDeleteOrchestratorResponse defines the response structure for executing a
 // MsgDeleteOrchestrator message.
 message MsgDeleteOrchestratorResponse {}
-
 
 // AddMinerDeposit defines a request for depositing tokens to the miner.
 message MsgAddMinerDeposit {
@@ -277,7 +290,8 @@ message MsgWithdrawMiner {
 // MsgWithdrawMinerResponse defines the response for rpc WithdrawMiner
 message MsgWithdrawMinerResponse {}
 
-// AddOrchestratorDeposit defines a request for depositing tokens to the orchestrator.
+// AddOrchestratorDeposit defines a request for depositing tokens to the
+// orchestrator.
 message MsgAddOrchestratorDeposit {
   option (cosmos.msg.v1.signer) = "depositor";
 
@@ -286,10 +300,12 @@ message MsgAddOrchestratorDeposit {
   cosmos.base.v1beta1.Coin amount = 3 [ (gogoproto.nullable) = false ];
 }
 
-// MsgAddOrchestratorDepositResponse defines the response for rpc AddOrchestratorDeposit
+// MsgAddOrchestratorDepositResponse defines the response for rpc
+// AddOrchestratorDeposit
 message MsgAddOrchestratorDepositResponse {}
 
-// WithdrawOrchestrator defines a request for withdrawing tokens from the orchestrator.
+// WithdrawOrchestrator defines a request for withdrawing tokens from the
+// orchestrator.
 message MsgWithdrawOrchestrator {
   option (cosmos.msg.v1.signer) = "depositor";
 
@@ -299,14 +315,15 @@ message MsgWithdrawOrchestrator {
   string receiver = 4 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
 }
 
-// MsgWithdrawOrchestratorResponse defines the response for rpc WithdrawOrchestrator
+// MsgWithdrawOrchestratorResponse defines the response for rpc
+// WithdrawOrchestrator
 message MsgWithdrawOrchestratorResponse {}
 
 // MsgUpdateMinerLabel defines a method for updating the miner label.
 message MsgUpdateNodeLabel {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string node_id = 2;
   // NOTE: All labels need to be provided
   repeated string labels = 3;
@@ -316,7 +333,7 @@ message MsgUpdateNodeLabel {
 message MsgUpdateNodeLabelResponse {}
 
 // MsgUpdateModel defines a request for updating allow_list from model.
-message MsgUpdateModel{
+message MsgUpdateModel {
   option (cosmos.msg.v1.signer) = "account";
   string account = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string model_name = 2;
@@ -327,39 +344,85 @@ message MsgUpdateModel{
 }
 
 // MsgUpdateModelResponse defines the MsgUpdateModel response type
-message MsgUpdateModelResponse{}
+message MsgUpdateModelResponse {}
 
 // MsgUpdateModelCreatorAllowList defines a request for updating model_creators.
-message MsgUpdateModelCreatorAllowList{
+message MsgUpdateModelCreatorAllowList {
   option (cosmos.msg.v1.signer) = "account";
   string account = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
-  repeated string model_creators  = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  repeated string model_creators = 2
+      [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
 }
 
 // MsgUpdateModelCreatorAllowListResponse defines the
 // MsgUpdateModelCreatorAllowList response type
 message MsgUpdateModelCreatorAllowListResponse {}
 
-// MsgUpdateOrchestratorReputation defines a request for updating orchestrator reputation.
+// MsgUpdateOrchestratorReputation defines a request for updating orchestrator
+// reputation.
 message MsgUpdateOrchestratorReputation {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string node_id = 2;
   // NOTE: All reputations need to be provided
   repeated Reputation reputations = 3;
 }
 
-// MsgUpdateOrchestratorReputationResponse defines the MsgUpdateOrchestratorReputation response type.
+// MsgUpdateOrchestratorReputationResponse defines the
+// MsgUpdateOrchestratorReputation response type.
 message MsgUpdateOrchestratorReputationResponse {}
 
-// MsgSetReputationParams defines a request for setting the reputation parameters.
+// MsgSetReputationParams defines a request for setting the reputation
+// parameters.
 message MsgSetReputationParams {
   option (cosmos.msg.v1.signer) = "creator";
 
-  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string creator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   ReputationParams params = 2 [ (gogoproto.nullable) = false ];
 }
 
-// MsgSetReputationParamsResponse defines the MsgSetReputationParams response type.
+// MsgSetReputationParamsResponse defines the MsgSetReputationParams response
+// type.
 message MsgSetReputationParamsResponse {}
+
+// MsgClaimTGEReward defines a request for claiming TGE reward.
+message MsgClaimTGEReward {
+  option (cosmos.msg.v1.signer) = "sender";
+
+  string sender = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  string receiver = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+}
+
+// MsgClaimTGERewardResponse defines the MsgClaimTGEReward response type.
+message MsgClaimTGERewardResponse {
+  // Exchanged coin amount
+  cosmos.base.v1beta1.Coin exchanged = 1 [ (gogoproto.nullable) = false ];
+
+  // Obtained NES amount
+  cosmos.base.v1beta1.Coin obtained = 2 [ (gogoproto.nullable) = false ];
+
+  // Used exchange rate
+  string exchange_rate = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+// MsgSetDistributionConfig defines a request for setting distribution config.
+message MsgSetDistributionConfig {
+  option (cosmos.msg.v1.signer) = "admin";
+
+  // admin address
+  string admin = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // Distribution config
+  DistributionConfig config = 2 [ (gogoproto.nullable) = false ];
+}
+
+// MsgSetDistributionConfigResponse defines the MsgSetDistributionConfig
+// response type.
+message MsgSetDistributionConfigResponse {
+  DistributionConfig config = 1 [ (gogoproto.nullable) = false ];
+}

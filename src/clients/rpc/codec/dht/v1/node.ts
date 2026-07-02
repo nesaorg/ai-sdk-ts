@@ -1,15 +1,8 @@
 /* eslint-disable */
-import {
-  Long,
-  isSet,
-  bytesFromBase64,
-  base64FromBytes,
-  DeepPartial,
-  Exact,
-} from '../../helpers.js';
-import _m0 from 'protobufjs/minimal';
-import { JsonSafe } from '../../json-safe.js';
-export const protobufPackage = 'dht.v1';
+import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
+import { JsonSafe } from "../../json-safe";
+export const protobufPackage = "dht.v1";
 export interface Node {
   nodeId: string;
   publicName: string;
@@ -24,34 +17,34 @@ export interface Node {
 }
 function createBaseNode(): Node {
   return {
-    nodeId: '',
-    publicName: '',
-    version: '',
-    networkAddress: '',
-    walletAddress: '',
+    nodeId: "",
+    publicName: "",
+    version: "",
+    networkAddress: "",
+    walletAddress: "",
     vram: Long.UZERO,
     networkRps: 0,
     nextPings: [],
     usingRelay: false,
-    labels: [],
+    labels: []
   };
 }
 export const Node = {
-  typeUrl: '/dht.v1.Node',
+  typeUrl: "/dht.v1.Node",
   encode(message: Node, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
     }
-    if (message.publicName !== '') {
+    if (message.publicName !== "") {
       writer.uint32(18).string(message.publicName);
     }
-    if (message.version !== '') {
+    if (message.version !== "") {
       writer.uint32(26).string(message.version);
     }
-    if (message.networkAddress !== '') {
+    if (message.networkAddress !== "") {
       writer.uint32(34).string(message.networkAddress);
     }
-    if (message.walletAddress !== '') {
+    if (message.walletAddress !== "") {
       writer.uint32(42).string(message.walletAddress);
     }
     if (!message.vram.isZero()) {
@@ -120,17 +113,13 @@ export const Node = {
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
     if (isSet(object.publicName)) obj.publicName = String(object.publicName);
     if (isSet(object.version)) obj.version = String(object.version);
-    if (isSet(object.networkAddress))
-      obj.networkAddress = String(object.networkAddress);
-    if (isSet(object.walletAddress))
-      obj.walletAddress = String(object.walletAddress);
+    if (isSet(object.networkAddress)) obj.networkAddress = String(object.networkAddress);
+    if (isSet(object.walletAddress)) obj.walletAddress = String(object.walletAddress);
     if (isSet(object.vram)) obj.vram = Long.fromValue(object.vram);
     if (isSet(object.networkRps)) obj.networkRps = Number(object.networkRps);
-    if (Array.isArray(object?.nextPings))
-      obj.nextPings = object.nextPings.map((e: any) => bytesFromBase64(e));
+    if (Array.isArray(object?.nextPings)) obj.nextPings = object.nextPings.map((e: any) => bytesFromBase64(e));
     if (isSet(object.usingRelay)) obj.usingRelay = Boolean(object.usingRelay);
-    if (Array.isArray(object?.labels))
-      obj.labels = object.labels.map((e: any) => String(e));
+    if (Array.isArray(object?.labels)) obj.labels = object.labels.map((e: any) => String(e));
     return obj;
   },
   toJSON(message: Node): JsonSafe<Node> {
@@ -138,23 +127,18 @@ export const Node = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.publicName !== undefined && (obj.publicName = message.publicName);
     message.version !== undefined && (obj.version = message.version);
-    message.networkAddress !== undefined &&
-      (obj.networkAddress = message.networkAddress);
-    message.walletAddress !== undefined &&
-      (obj.walletAddress = message.walletAddress);
-    message.vram !== undefined &&
-      (obj.vram = (message.vram || Long.UZERO).toString());
+    message.networkAddress !== undefined && (obj.networkAddress = message.networkAddress);
+    message.walletAddress !== undefined && (obj.walletAddress = message.walletAddress);
+    message.vram !== undefined && (obj.vram = (message.vram || Long.UZERO).toString());
     message.networkRps !== undefined && (obj.networkRps = message.networkRps);
     if (message.nextPings) {
-      obj.nextPings = message.nextPings.map((e) =>
-        base64FromBytes(e !== undefined ? e : new Uint8Array()),
-      );
+      obj.nextPings = message.nextPings.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.nextPings = [];
     }
     message.usingRelay !== undefined && (obj.usingRelay = message.usingRelay);
     if (message.labels) {
-      obj.labels = message.labels.map((e) => e);
+      obj.labels = message.labels.map(e => e);
     } else {
       obj.labels = [];
     }
@@ -162,18 +146,18 @@ export const Node = {
   },
   fromPartial<I extends Exact<DeepPartial<Node>, I>>(object: I): Node {
     const message = createBaseNode();
-    message.nodeId = object.nodeId ?? '';
-    message.publicName = object.publicName ?? '';
-    message.version = object.version ?? '';
-    message.networkAddress = object.networkAddress ?? '';
-    message.walletAddress = object.walletAddress ?? '';
+    message.nodeId = object.nodeId ?? "";
+    message.publicName = object.publicName ?? "";
+    message.version = object.version ?? "";
+    message.networkAddress = object.networkAddress ?? "";
+    message.walletAddress = object.walletAddress ?? "";
     if (object.vram !== undefined && object.vram !== null) {
       message.vram = Long.fromValue(object.vram);
     }
     message.networkRps = object.networkRps ?? 0;
-    message.nextPings = object.nextPings?.map((e) => e) || [];
+    message.nextPings = object.nextPings?.map(e => e) || [];
     message.usingRelay = object.usingRelay ?? false;
-    message.labels = object.labels?.map((e) => e) || [];
+    message.labels = object.labels?.map(e => e) || [];
     return message;
-  },
+  }
 };

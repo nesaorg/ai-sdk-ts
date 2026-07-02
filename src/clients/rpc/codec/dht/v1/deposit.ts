@@ -1,16 +1,10 @@
 /* eslint-disable */
-import { Coin } from '../../cosmos/base/v1beta1/coin.js';
-import { Timestamp } from '../../google/protobuf/timestamp.js';
-import _m0 from 'protobufjs/minimal';
-import {
-  isSet,
-  fromJsonTimestamp,
-  fromTimestamp,
-  DeepPartial,
-  Exact,
-} from '../../helpers.js';
-import { JsonSafe } from '../../json-safe.js';
-export const protobufPackage = 'dht.v1';
+import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Timestamp } from "../../google/protobuf/timestamp";
+import * as _m0 from "protobufjs/minimal";
+import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
+export const protobufPackage = "dht.v1";
 /** BondStatus defines the deposit status of a miner or Orchestrator. */
 export enum BondStatus {
   /** BOND_STATUS_UNSPECIFIED - UNSPECIFIED defines an invalid validator status. */
@@ -26,19 +20,19 @@ export enum BondStatus {
 export function bondStatusFromJSON(object: any): BondStatus {
   switch (object) {
     case 0:
-    case 'BOND_STATUS_UNSPECIFIED':
+    case "BOND_STATUS_UNSPECIFIED":
       return BondStatus.BOND_STATUS_UNSPECIFIED;
     case 1:
-    case 'BOND_STATUS_UNBONDED':
+    case "BOND_STATUS_UNBONDED":
       return BondStatus.BOND_STATUS_UNBONDED;
     case 2:
-    case 'BOND_STATUS_UNBONDING':
+    case "BOND_STATUS_UNBONDING":
       return BondStatus.BOND_STATUS_UNBONDING;
     case 3:
-    case 'BOND_STATUS_BONDED':
+    case "BOND_STATUS_BONDED":
       return BondStatus.BOND_STATUS_BONDED;
     case -1:
-    case 'UNRECOGNIZED':
+    case "UNRECOGNIZED":
     default:
       return BondStatus.UNRECOGNIZED;
   }
@@ -46,16 +40,16 @@ export function bondStatusFromJSON(object: any): BondStatus {
 export function bondStatusToJSON(object: BondStatus): string {
   switch (object) {
     case BondStatus.BOND_STATUS_UNSPECIFIED:
-      return 'BOND_STATUS_UNSPECIFIED';
+      return "BOND_STATUS_UNSPECIFIED";
     case BondStatus.BOND_STATUS_UNBONDED:
-      return 'BOND_STATUS_UNBONDED';
+      return "BOND_STATUS_UNBONDED";
     case BondStatus.BOND_STATUS_UNBONDING:
-      return 'BOND_STATUS_UNBONDING';
+      return "BOND_STATUS_UNBONDING";
     case BondStatus.BOND_STATUS_BONDED:
-      return 'BOND_STATUS_BONDED';
+      return "BOND_STATUS_BONDED";
     case BondStatus.UNRECOGNIZED:
     default:
-      return 'UNRECOGNIZED';
+      return "UNRECOGNIZED";
   }
 }
 /** UnbondingEntry defines an unbonding entry of a miner or Orchestrator. */
@@ -67,31 +61,25 @@ export interface UnbondingEntry {
 }
 function createBaseUnbondingEntry(): UnbondingEntry {
   return {
-    nodeId: '',
+    nodeId: "",
     amount: Coin.fromPartial({}),
     completionTime: Timestamp.fromPartial({}),
-    receiver: '',
+    receiver: ""
   };
 }
 export const UnbondingEntry = {
-  typeUrl: '/dht.v1.UnbondingEntry',
-  encode(
-    message: UnbondingEntry,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.nodeId !== '') {
+  typeUrl: "/dht.v1.UnbondingEntry",
+  encode(message: UnbondingEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
     }
     if (message.amount !== undefined) {
       Coin.encode(message.amount, writer.uint32(18).fork()).ldelim();
     }
     if (message.completionTime !== undefined) {
-      Timestamp.encode(
-        message.completionTime,
-        writer.uint32(26).fork(),
-      ).ldelim();
+      Timestamp.encode(message.completionTime, writer.uint32(26).fork()).ldelim();
     }
-    if (message.receiver !== '') {
+    if (message.receiver !== "") {
       writer.uint32(34).string(message.receiver);
     }
     return writer;
@@ -126,35 +114,28 @@ export const UnbondingEntry = {
     const obj = createBaseUnbondingEntry();
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
-    if (isSet(object.completionTime))
-      obj.completionTime = fromJsonTimestamp(object.completionTime);
+    if (isSet(object.completionTime)) obj.completionTime = fromJsonTimestamp(object.completionTime);
     if (isSet(object.receiver)) obj.receiver = String(object.receiver);
     return obj;
   },
   toJSON(message: UnbondingEntry): JsonSafe<UnbondingEntry> {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.amount !== undefined &&
-      (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.completionTime !== undefined &&
-      (obj.completionTime = fromTimestamp(
-        message.completionTime,
-      ).toISOString());
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
     message.receiver !== undefined && (obj.receiver = message.receiver);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<UnbondingEntry>, I>>(
-    object: I,
-  ): UnbondingEntry {
+  fromPartial<I extends Exact<DeepPartial<UnbondingEntry>, I>>(object: I): UnbondingEntry {
     const message = createBaseUnbondingEntry();
-    message.nodeId = object.nodeId ?? '';
+    message.nodeId = object.nodeId ?? "";
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = Coin.fromPartial(object.amount);
     }
     if (object.completionTime !== undefined && object.completionTime !== null) {
       message.completionTime = Timestamp.fromPartial(object.completionTime);
     }
-    message.receiver = object.receiver ?? '';
+    message.receiver = object.receiver ?? "";
     return message;
-  },
+  }
 };

@@ -1,28 +1,14 @@
 /* eslint-disable */
-import { Params } from './params.js';
-import { TokenPrice, ModelConfig } from './model.js';
-import { Coin } from '../../cosmos/base/v1beta1/coin.js';
-import {
-  Availability,
-  InferenceType,
-  availabilityFromJSON,
-  inferenceTypeFromJSON,
-  availabilityToJSON,
-  inferenceTypeToJSON,
-} from './orchestrator.js';
-import { Reputation, ReputationParams } from './reputation.js';
-import {
-  Long,
-  isSet,
-  DeepPartial,
-  Exact,
-  bytesFromBase64,
-  base64FromBytes,
-  Rpc,
-} from '../../helpers.js';
-import _m0 from 'protobufjs/minimal';
-import { JsonSafe } from '../../json-safe.js';
-export const protobufPackage = 'dht.v1';
+import { Params } from "./params";
+import { TokenPrice, ModelConfig } from "./model";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Availability, InferenceType, availabilityFromJSON, inferenceTypeFromJSON, availabilityToJSON, inferenceTypeToJSON } from "./orchestrator";
+import { Reputation, ReputationParams } from "./reputation";
+import { DistributionConfig } from "./tge";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
+import { JsonSafe } from "../../json-safe";
+export const protobufPackage = "dht.v1";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
   /**
@@ -141,8 +127,8 @@ export interface MsgRegisterOrchestrator {
   modelName: string;
 }
 /**
- * MsgRegisterOrchestratorResponse defines the response structure for executing a
- * MsgRegisterOrchestrator message.
+ * MsgRegisterOrchestratorResponse defines the response structure for executing
+ * a MsgRegisterOrchestrator message.
  */
 export interface MsgRegisterOrchestratorResponse {}
 /** MsgDeleteOrchestrator is the Msg/DeleteOrchestrator request type. */
@@ -172,22 +158,34 @@ export interface MsgWithdrawMiner {
 }
 /** MsgWithdrawMinerResponse defines the response for rpc WithdrawMiner */
 export interface MsgWithdrawMinerResponse {}
-/** AddOrchestratorDeposit defines a request for depositing tokens to the orchestrator. */
+/**
+ * AddOrchestratorDeposit defines a request for depositing tokens to the
+ * orchestrator.
+ */
 export interface MsgAddOrchestratorDeposit {
   depositor: string;
   nodeId: string;
   amount: Coin;
 }
-/** MsgAddOrchestratorDepositResponse defines the response for rpc AddOrchestratorDeposit */
+/**
+ * MsgAddOrchestratorDepositResponse defines the response for rpc
+ * AddOrchestratorDeposit
+ */
 export interface MsgAddOrchestratorDepositResponse {}
-/** WithdrawOrchestrator defines a request for withdrawing tokens from the orchestrator. */
+/**
+ * WithdrawOrchestrator defines a request for withdrawing tokens from the
+ * orchestrator.
+ */
 export interface MsgWithdrawOrchestrator {
   depositor: string;
   nodeId: string;
   amount: Coin;
   receiver: string;
 }
-/** MsgWithdrawOrchestratorResponse defines the response for rpc WithdrawOrchestrator */
+/**
+ * MsgWithdrawOrchestratorResponse defines the response for rpc
+ * WithdrawOrchestrator
+ */
 export interface MsgWithdrawOrchestratorResponse {}
 /** MsgUpdateMinerLabel defines a method for updating the miner label. */
 export interface MsgUpdateNodeLabel {
@@ -219,35 +217,72 @@ export interface MsgUpdateModelCreatorAllowList {
  * MsgUpdateModelCreatorAllowList response type
  */
 export interface MsgUpdateModelCreatorAllowListResponse {}
-/** MsgUpdateOrchestratorReputation defines a request for updating orchestrator reputation. */
+/**
+ * MsgUpdateOrchestratorReputation defines a request for updating orchestrator
+ * reputation.
+ */
 export interface MsgUpdateOrchestratorReputation {
   creator: string;
   nodeId: string;
   /** NOTE: All reputations need to be provided */
   reputations: Reputation[];
 }
-/** MsgUpdateOrchestratorReputationResponse defines the MsgUpdateOrchestratorReputation response type. */
+/**
+ * MsgUpdateOrchestratorReputationResponse defines the
+ * MsgUpdateOrchestratorReputation response type.
+ */
 export interface MsgUpdateOrchestratorReputationResponse {}
-/** MsgSetReputationParams defines a request for setting the reputation parameters. */
+/**
+ * MsgSetReputationParams defines a request for setting the reputation
+ * parameters.
+ */
 export interface MsgSetReputationParams {
   creator: string;
   params: ReputationParams;
 }
-/** MsgSetReputationParamsResponse defines the MsgSetReputationParams response type. */
+/**
+ * MsgSetReputationParamsResponse defines the MsgSetReputationParams response
+ * type.
+ */
 export interface MsgSetReputationParamsResponse {}
+/** MsgClaimTGEReward defines a request for claiming TGE reward. */
+export interface MsgClaimTGEReward {
+  sender: string;
+  receiver: string;
+}
+/** MsgClaimTGERewardResponse defines the MsgClaimTGEReward response type. */
+export interface MsgClaimTGERewardResponse {
+  /** Exchanged coin amount */
+  exchanged: Coin;
+  /** Obtained NES amount */
+  obtained: Coin;
+  /** Used exchange rate */
+  exchangeRate: string;
+}
+/** MsgSetDistributionConfig defines a request for setting distribution config. */
+export interface MsgSetDistributionConfig {
+  /** admin address */
+  admin: string;
+  /** Distribution config */
+  config: DistributionConfig;
+}
+/**
+ * MsgSetDistributionConfigResponse defines the MsgSetDistributionConfig
+ * response type.
+ */
+export interface MsgSetDistributionConfigResponse {
+  config: DistributionConfig;
+}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
-    authority: '',
-    params: Params.fromPartial({}),
+    authority: "",
+    params: Params.fromPartial({})
   };
 }
 export const MsgUpdateParams = {
-  typeUrl: '/dht.v1.MsgUpdateParams',
-  encode(
-    message: MsgUpdateParams,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.authority !== '') {
+  typeUrl: "/dht.v1.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
     if (message.params !== undefined) {
@@ -284,36 +319,27 @@ export const MsgUpdateParams = {
   toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
-    message.params !== undefined &&
-      (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(
-    object: I,
-  ): MsgUpdateParams {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
     const message = createBaseMsgUpdateParams();
-    message.authority = object.authority ?? '';
+    message.authority = object.authority ?? "";
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  typeUrl: '/dht.v1.MsgUpdateParamsResponse',
-  encode(
-    _: MsgUpdateParamsResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateParamsResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
@@ -335,31 +361,26 @@ export const MsgUpdateParamsResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(
-    _: I,
-  ): MsgUpdateParamsResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
     const message = createBaseMsgUpdateParamsResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterModel(): MsgRegisterModel {
   return {
-    creator: '',
-    modelName: '',
+    creator: "",
+    modelName: "",
     allowList: [],
-    tokenPrice: undefined,
+    tokenPrice: undefined
   };
 }
 export const MsgRegisterModel = {
-  typeUrl: '/dht.v1.MsgRegisterModel',
-  encode(
-    message: MsgRegisterModel,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgRegisterModel",
+  encode(message: MsgRegisterModel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.modelName !== '') {
+    if (message.modelName !== "") {
       writer.uint32(18).string(message.modelName);
     }
     for (const v of message.allowList) {
@@ -400,10 +421,8 @@ export const MsgRegisterModel = {
     const obj = createBaseMsgRegisterModel();
     if (isSet(object.creator)) obj.creator = String(object.creator);
     if (isSet(object.modelName)) obj.modelName = String(object.modelName);
-    if (Array.isArray(object?.allowList))
-      obj.allowList = object.allowList.map((e: any) => String(e));
-    if (isSet(object.tokenPrice))
-      obj.tokenPrice = TokenPrice.fromJSON(object.tokenPrice);
+    if (Array.isArray(object?.allowList)) obj.allowList = object.allowList.map((e: any) => String(e));
+    if (isSet(object.tokenPrice)) obj.tokenPrice = TokenPrice.fromJSON(object.tokenPrice);
     return obj;
   },
   toJSON(message: MsgRegisterModel): JsonSafe<MsgRegisterModel> {
@@ -411,44 +430,33 @@ export const MsgRegisterModel = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.modelName !== undefined && (obj.modelName = message.modelName);
     if (message.allowList) {
-      obj.allowList = message.allowList.map((e) => e);
+      obj.allowList = message.allowList.map(e => e);
     } else {
       obj.allowList = [];
     }
-    message.tokenPrice !== undefined &&
-      (obj.tokenPrice = message.tokenPrice
-        ? TokenPrice.toJSON(message.tokenPrice)
-        : undefined);
+    message.tokenPrice !== undefined && (obj.tokenPrice = message.tokenPrice ? TokenPrice.toJSON(message.tokenPrice) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterModel>, I>>(
-    object: I,
-  ): MsgRegisterModel {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterModel>, I>>(object: I): MsgRegisterModel {
     const message = createBaseMsgRegisterModel();
-    message.creator = object.creator ?? '';
-    message.modelName = object.modelName ?? '';
-    message.allowList = object.allowList?.map((e) => e) || [];
+    message.creator = object.creator ?? "";
+    message.modelName = object.modelName ?? "";
+    message.allowList = object.allowList?.map(e => e) || [];
     if (object.tokenPrice !== undefined && object.tokenPrice !== null) {
       message.tokenPrice = TokenPrice.fromPartial(object.tokenPrice);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterModelResponse(): MsgRegisterModelResponse {
   return {};
 }
 export const MsgRegisterModelResponse = {
-  typeUrl: '/dht.v1.MsgRegisterModelResponse',
-  encode(
-    _: MsgRegisterModelResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgRegisterModelResponse",
+  encode(_: MsgRegisterModelResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgRegisterModelResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterModelResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterModelResponse();
@@ -470,29 +478,24 @@ export const MsgRegisterModelResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterModelResponse>, I>>(
-    _: I,
-  ): MsgRegisterModelResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterModelResponse>, I>>(_: I): MsgRegisterModelResponse {
     const message = createBaseMsgRegisterModelResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteModel(): MsgDeleteModel {
   return {
-    creator: '',
-    modelName: '',
+    creator: "",
+    modelName: ""
   };
 }
 export const MsgDeleteModel = {
-  typeUrl: '/dht.v1.MsgDeleteModel',
-  encode(
-    message: MsgDeleteModel,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgDeleteModel",
+  encode(message: MsgDeleteModel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.modelName !== '') {
+    if (message.modelName !== "") {
       writer.uint32(18).string(message.modelName);
     }
     return writer;
@@ -529,30 +532,22 @@ export const MsgDeleteModel = {
     message.modelName !== undefined && (obj.modelName = message.modelName);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteModel>, I>>(
-    object: I,
-  ): MsgDeleteModel {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteModel>, I>>(object: I): MsgDeleteModel {
     const message = createBaseMsgDeleteModel();
-    message.creator = object.creator ?? '';
-    message.modelName = object.modelName ?? '';
+    message.creator = object.creator ?? "";
+    message.modelName = object.modelName ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteModelResponse(): MsgDeleteModelResponse {
   return {};
 }
 export const MsgDeleteModelResponse = {
-  typeUrl: '/dht.v1.MsgDeleteModelResponse',
-  encode(
-    _: MsgDeleteModelResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgDeleteModelResponse",
+  encode(_: MsgDeleteModelResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgDeleteModelResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteModelResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteModelResponse();
@@ -574,26 +569,21 @@ export const MsgDeleteModelResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteModelResponse>, I>>(
-    _: I,
-  ): MsgDeleteModelResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteModelResponse>, I>>(_: I): MsgDeleteModelResponse {
     const message = createBaseMsgDeleteModelResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgSetModelConfig(): MsgSetModelConfig {
   return {
-    creator: '',
-    config: ModelConfig.fromPartial({}),
+    creator: "",
+    config: ModelConfig.fromPartial({})
   };
 }
 export const MsgSetModelConfig = {
-  typeUrl: '/dht.v1.MsgSetModelConfig',
-  encode(
-    message: MsgSetModelConfig,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgSetModelConfig",
+  encode(message: MsgSetModelConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
     if (message.config !== undefined) {
@@ -630,38 +620,27 @@ export const MsgSetModelConfig = {
   toJSON(message: MsgSetModelConfig): JsonSafe<MsgSetModelConfig> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.config !== undefined &&
-      (obj.config = message.config
-        ? ModelConfig.toJSON(message.config)
-        : undefined);
+    message.config !== undefined && (obj.config = message.config ? ModelConfig.toJSON(message.config) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgSetModelConfig>, I>>(
-    object: I,
-  ): MsgSetModelConfig {
+  fromPartial<I extends Exact<DeepPartial<MsgSetModelConfig>, I>>(object: I): MsgSetModelConfig {
     const message = createBaseMsgSetModelConfig();
-    message.creator = object.creator ?? '';
+    message.creator = object.creator ?? "";
     if (object.config !== undefined && object.config !== null) {
       message.config = ModelConfig.fromPartial(object.config);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgSetModelConfigResponse(): MsgSetModelConfigResponse {
   return {};
 }
 export const MsgSetModelConfigResponse = {
-  typeUrl: '/dht.v1.MsgSetModelConfigResponse',
-  encode(
-    _: MsgSetModelConfigResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgSetModelConfigResponse",
+  encode(_: MsgSetModelConfigResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgSetModelConfigResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetModelConfigResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetModelConfigResponse();
@@ -683,49 +662,44 @@ export const MsgSetModelConfigResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgSetModelConfigResponse>, I>>(
-    _: I,
-  ): MsgSetModelConfigResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgSetModelConfigResponse>, I>>(_: I): MsgSetModelConfigResponse {
     const message = createBaseMsgSetModelConfigResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterNode(): MsgRegisterNode {
   return {
-    creator: '',
-    nodeId: '',
-    publicName: '',
-    version: '',
-    networkAddress: '',
-    walletAddress: '',
+    creator: "",
+    nodeId: "",
+    publicName: "",
+    version: "",
+    networkAddress: "",
+    walletAddress: "",
     vram: Long.UZERO,
     networkRps: 0,
     usingRelay: false,
-    nextPings: [],
+    nextPings: []
   };
 }
 export const MsgRegisterNode = {
-  typeUrl: '/dht.v1.MsgRegisterNode',
-  encode(
-    message: MsgRegisterNode,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgRegisterNode",
+  encode(message: MsgRegisterNode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
-    if (message.publicName !== '') {
+    if (message.publicName !== "") {
       writer.uint32(26).string(message.publicName);
     }
-    if (message.version !== '') {
+    if (message.version !== "") {
       writer.uint32(34).string(message.version);
     }
-    if (message.networkAddress !== '') {
+    if (message.networkAddress !== "") {
       writer.uint32(42).string(message.networkAddress);
     }
-    if (message.walletAddress !== '') {
+    if (message.walletAddress !== "") {
       writer.uint32(50).string(message.walletAddress);
     }
     if (!message.vram.isZero()) {
@@ -792,15 +766,12 @@ export const MsgRegisterNode = {
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
     if (isSet(object.publicName)) obj.publicName = String(object.publicName);
     if (isSet(object.version)) obj.version = String(object.version);
-    if (isSet(object.networkAddress))
-      obj.networkAddress = String(object.networkAddress);
-    if (isSet(object.walletAddress))
-      obj.walletAddress = String(object.walletAddress);
+    if (isSet(object.networkAddress)) obj.networkAddress = String(object.networkAddress);
+    if (isSet(object.walletAddress)) obj.walletAddress = String(object.walletAddress);
     if (isSet(object.vram)) obj.vram = Long.fromValue(object.vram);
     if (isSet(object.networkRps)) obj.networkRps = Number(object.networkRps);
     if (isSet(object.usingRelay)) obj.usingRelay = Boolean(object.usingRelay);
-    if (Array.isArray(object?.nextPings))
-      obj.nextPings = object.nextPings.map((e: any) => bytesFromBase64(e));
+    if (Array.isArray(object?.nextPings)) obj.nextPings = object.nextPings.map((e: any) => bytesFromBase64(e));
     return obj;
   },
   toJSON(message: MsgRegisterNode): JsonSafe<MsgRegisterNode> {
@@ -809,57 +780,44 @@ export const MsgRegisterNode = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.publicName !== undefined && (obj.publicName = message.publicName);
     message.version !== undefined && (obj.version = message.version);
-    message.networkAddress !== undefined &&
-      (obj.networkAddress = message.networkAddress);
-    message.walletAddress !== undefined &&
-      (obj.walletAddress = message.walletAddress);
-    message.vram !== undefined &&
-      (obj.vram = (message.vram || Long.UZERO).toString());
+    message.networkAddress !== undefined && (obj.networkAddress = message.networkAddress);
+    message.walletAddress !== undefined && (obj.walletAddress = message.walletAddress);
+    message.vram !== undefined && (obj.vram = (message.vram || Long.UZERO).toString());
     message.networkRps !== undefined && (obj.networkRps = message.networkRps);
     message.usingRelay !== undefined && (obj.usingRelay = message.usingRelay);
     if (message.nextPings) {
-      obj.nextPings = message.nextPings.map((e) =>
-        base64FromBytes(e !== undefined ? e : new Uint8Array()),
-      );
+      obj.nextPings = message.nextPings.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.nextPings = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterNode>, I>>(
-    object: I,
-  ): MsgRegisterNode {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterNode>, I>>(object: I): MsgRegisterNode {
     const message = createBaseMsgRegisterNode();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
-    message.publicName = object.publicName ?? '';
-    message.version = object.version ?? '';
-    message.networkAddress = object.networkAddress ?? '';
-    message.walletAddress = object.walletAddress ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
+    message.publicName = object.publicName ?? "";
+    message.version = object.version ?? "";
+    message.networkAddress = object.networkAddress ?? "";
+    message.walletAddress = object.walletAddress ?? "";
     if (object.vram !== undefined && object.vram !== null) {
       message.vram = Long.fromValue(object.vram);
     }
     message.networkRps = object.networkRps ?? 0;
     message.usingRelay = object.usingRelay ?? false;
-    message.nextPings = object.nextPings?.map((e) => e) || [];
+    message.nextPings = object.nextPings?.map(e => e) || [];
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterNodeResponse(): MsgRegisterNodeResponse {
   return {};
 }
 export const MsgRegisterNodeResponse = {
-  typeUrl: '/dht.v1.MsgRegisterNodeResponse',
-  encode(
-    _: MsgRegisterNodeResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgRegisterNodeResponse",
+  encode(_: MsgRegisterNodeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgRegisterNodeResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterNodeResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterNodeResponse();
@@ -881,29 +839,24 @@ export const MsgRegisterNodeResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterNodeResponse>, I>>(
-    _: I,
-  ): MsgRegisterNodeResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterNodeResponse>, I>>(_: I): MsgRegisterNodeResponse {
     const message = createBaseMsgRegisterNodeResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteNode(): MsgDeleteNode {
   return {
-    creator: '',
-    nodeId: '',
+    creator: "",
+    nodeId: ""
   };
 }
 export const MsgDeleteNode = {
-  typeUrl: '/dht.v1.MsgDeleteNode',
-  encode(
-    message: MsgDeleteNode,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgDeleteNode",
+  encode(message: MsgDeleteNode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     return writer;
@@ -940,30 +893,22 @@ export const MsgDeleteNode = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteNode>, I>>(
-    object: I,
-  ): MsgDeleteNode {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteNode>, I>>(object: I): MsgDeleteNode {
     const message = createBaseMsgDeleteNode();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteNodeResponse(): MsgDeleteNodeResponse {
   return {};
 }
 export const MsgDeleteNodeResponse = {
-  typeUrl: '/dht.v1.MsgDeleteNodeResponse',
-  encode(
-    _: MsgDeleteNodeResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgDeleteNodeResponse",
+  encode(_: MsgDeleteNodeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgDeleteNodeResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteNodeResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteNodeResponse();
@@ -985,29 +930,24 @@ export const MsgDeleteNodeResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteNodeResponse>, I>>(
-    _: I,
-  ): MsgDeleteNodeResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteNodeResponse>, I>>(_: I): MsgDeleteNodeResponse {
     const message = createBaseMsgDeleteNodeResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterMiner(): MsgRegisterMiner {
   return {
-    creator: '',
-    nodeId: '',
+    creator: "",
+    nodeId: ""
   };
 }
 export const MsgRegisterMiner = {
-  typeUrl: '/dht.v1.MsgRegisterMiner',
-  encode(
-    message: MsgRegisterMiner,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgRegisterMiner",
+  encode(message: MsgRegisterMiner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     return writer;
@@ -1044,30 +984,22 @@ export const MsgRegisterMiner = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterMiner>, I>>(
-    object: I,
-  ): MsgRegisterMiner {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterMiner>, I>>(object: I): MsgRegisterMiner {
     const message = createBaseMsgRegisterMiner();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterMinerResponse(): MsgRegisterMinerResponse {
   return {};
 }
 export const MsgRegisterMinerResponse = {
-  typeUrl: '/dht.v1.MsgRegisterMinerResponse',
-  encode(
-    _: MsgRegisterMinerResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgRegisterMinerResponse",
+  encode(_: MsgRegisterMinerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgRegisterMinerResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterMinerResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterMinerResponse();
@@ -1089,36 +1021,31 @@ export const MsgRegisterMinerResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterMinerResponse>, I>>(
-    _: I,
-  ): MsgRegisterMinerResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterMinerResponse>, I>>(_: I): MsgRegisterMinerResponse {
     const message = createBaseMsgRegisterMinerResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateMiner(): MsgUpdateMiner {
   return {
-    creator: '',
-    nodeId: '',
-    reputationValue: '',
+    creator: "",
+    nodeId: "",
+    reputationValue: "",
     cumulativeReward: [],
     cumulativePenalty: [],
-    sRolling: '',
+    sRolling: ""
   };
 }
 export const MsgUpdateMiner = {
-  typeUrl: '/dht.v1.MsgUpdateMiner',
-  encode(
-    message: MsgUpdateMiner,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgUpdateMiner",
+  encode(message: MsgUpdateMiner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
-    if (message.reputationValue !== '') {
+    if (message.reputationValue !== "") {
       writer.uint32(26).string(message.reputationValue);
     }
     for (const v of message.cumulativeReward) {
@@ -1127,7 +1054,7 @@ export const MsgUpdateMiner = {
     for (const v of message.cumulativePenalty) {
       Coin.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    if (message.sRolling !== '') {
+    if (message.sRolling !== "") {
       writer.uint32(50).string(message.sRolling);
     }
     return writer;
@@ -1168,16 +1095,9 @@ export const MsgUpdateMiner = {
     const obj = createBaseMsgUpdateMiner();
     if (isSet(object.creator)) obj.creator = String(object.creator);
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
-    if (isSet(object.reputationValue))
-      obj.reputationValue = String(object.reputationValue);
-    if (Array.isArray(object?.cumulativeReward))
-      obj.cumulativeReward = object.cumulativeReward.map((e: any) =>
-        Coin.fromJSON(e),
-      );
-    if (Array.isArray(object?.cumulativePenalty))
-      obj.cumulativePenalty = object.cumulativePenalty.map((e: any) =>
-        Coin.fromJSON(e),
-      );
+    if (isSet(object.reputationValue)) obj.reputationValue = String(object.reputationValue);
+    if (Array.isArray(object?.cumulativeReward)) obj.cumulativeReward = object.cumulativeReward.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.cumulativePenalty)) obj.cumulativePenalty = object.cumulativePenalty.map((e: any) => Coin.fromJSON(e));
     if (isSet(object.sRolling)) obj.sRolling = String(object.sRolling);
     return obj;
   },
@@ -1185,55 +1105,40 @@ export const MsgUpdateMiner = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.reputationValue !== undefined &&
-      (obj.reputationValue = message.reputationValue);
+    message.reputationValue !== undefined && (obj.reputationValue = message.reputationValue);
     if (message.cumulativeReward) {
-      obj.cumulativeReward = message.cumulativeReward.map((e) =>
-        e ? Coin.toJSON(e) : undefined,
-      );
+      obj.cumulativeReward = message.cumulativeReward.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.cumulativeReward = [];
     }
     if (message.cumulativePenalty) {
-      obj.cumulativePenalty = message.cumulativePenalty.map((e) =>
-        e ? Coin.toJSON(e) : undefined,
-      );
+      obj.cumulativePenalty = message.cumulativePenalty.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.cumulativePenalty = [];
     }
     message.sRolling !== undefined && (obj.sRolling = message.sRolling);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateMiner>, I>>(
-    object: I,
-  ): MsgUpdateMiner {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateMiner>, I>>(object: I): MsgUpdateMiner {
     const message = createBaseMsgUpdateMiner();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
-    message.reputationValue = object.reputationValue ?? '';
-    message.cumulativeReward =
-      object.cumulativeReward?.map((e) => Coin.fromPartial(e)) || [];
-    message.cumulativePenalty =
-      object.cumulativePenalty?.map((e) => Coin.fromPartial(e)) || [];
-    message.sRolling = object.sRolling ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
+    message.reputationValue = object.reputationValue ?? "";
+    message.cumulativeReward = object.cumulativeReward?.map(e => Coin.fromPartial(e)) || [];
+    message.cumulativePenalty = object.cumulativePenalty?.map(e => Coin.fromPartial(e)) || [];
+    message.sRolling = object.sRolling ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateMinerResponse(): MsgUpdateMinerResponse {
   return {};
 }
 export const MsgUpdateMinerResponse = {
-  typeUrl: '/dht.v1.MsgUpdateMinerResponse',
-  encode(
-    _: MsgUpdateMinerResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgUpdateMinerResponse",
+  encode(_: MsgUpdateMinerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateMinerResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateMinerResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateMinerResponse();
@@ -1255,29 +1160,24 @@ export const MsgUpdateMinerResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateMinerResponse>, I>>(
-    _: I,
-  ): MsgUpdateMinerResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateMinerResponse>, I>>(_: I): MsgUpdateMinerResponse {
     const message = createBaseMsgUpdateMinerResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteMiner(): MsgDeleteMiner {
   return {
-    creator: '',
-    nodeId: '',
+    creator: "",
+    nodeId: ""
   };
 }
 export const MsgDeleteMiner = {
-  typeUrl: '/dht.v1.MsgDeleteMiner',
-  encode(
-    message: MsgDeleteMiner,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgDeleteMiner",
+  encode(message: MsgDeleteMiner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     return writer;
@@ -1314,30 +1214,22 @@ export const MsgDeleteMiner = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteMiner>, I>>(
-    object: I,
-  ): MsgDeleteMiner {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteMiner>, I>>(object: I): MsgDeleteMiner {
     const message = createBaseMsgDeleteMiner();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteMinerResponse(): MsgDeleteMinerResponse {
   return {};
 }
 export const MsgDeleteMinerResponse = {
-  typeUrl: '/dht.v1.MsgDeleteMinerResponse',
-  encode(
-    _: MsgDeleteMinerResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgDeleteMinerResponse",
+  encode(_: MsgDeleteMinerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgDeleteMinerResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteMinerResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteMinerResponse();
@@ -1359,34 +1251,29 @@ export const MsgDeleteMinerResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteMinerResponse>, I>>(
-    _: I,
-  ): MsgDeleteMinerResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteMinerResponse>, I>>(_: I): MsgDeleteMinerResponse {
     const message = createBaseMsgDeleteMinerResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterOrchestrator(): MsgRegisterOrchestrator {
   return {
-    creator: '',
-    nodeId: '',
+    creator: "",
+    nodeId: "",
     status: 0,
     blockCount: [],
     minerIds: [],
     inferenceType: 0,
-    modelName: '',
+    modelName: ""
   };
 }
 export const MsgRegisterOrchestrator = {
-  typeUrl: '/dht.v1.MsgRegisterOrchestrator',
-  encode(
-    message: MsgRegisterOrchestrator,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgRegisterOrchestrator",
+  encode(message: MsgRegisterOrchestrator, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.status !== 0) {
@@ -1403,15 +1290,12 @@ export const MsgRegisterOrchestrator = {
     if (message.inferenceType !== 0) {
       writer.uint32(48).int32(message.inferenceType);
     }
-    if (message.modelName !== '') {
+    if (message.modelName !== "") {
       writer.uint32(58).string(message.modelName);
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgRegisterOrchestrator {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterOrchestrator {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterOrchestrator();
@@ -1458,12 +1342,9 @@ export const MsgRegisterOrchestrator = {
     if (isSet(object.creator)) obj.creator = String(object.creator);
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
     if (isSet(object.status)) obj.status = availabilityFromJSON(object.status);
-    if (Array.isArray(object?.blockCount))
-      obj.blockCount = object.blockCount.map((e: any) => Long.fromValue(e));
-    if (Array.isArray(object?.minerIds))
-      obj.minerIds = object.minerIds.map((e: any) => String(e));
-    if (isSet(object.inferenceType))
-      obj.inferenceType = inferenceTypeFromJSON(object.inferenceType);
+    if (Array.isArray(object?.blockCount)) obj.blockCount = object.blockCount.map((e: any) => Long.fromValue(e));
+    if (Array.isArray(object?.minerIds)) obj.minerIds = object.minerIds.map((e: any) => String(e));
+    if (isSet(object.inferenceType)) obj.inferenceType = inferenceTypeFromJSON(object.inferenceType);
     if (isSet(object.modelName)) obj.modelName = String(object.modelName);
     return obj;
   },
@@ -1471,54 +1352,42 @@ export const MsgRegisterOrchestrator = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.status !== undefined &&
-      (obj.status = availabilityToJSON(message.status));
+    message.status !== undefined && (obj.status = availabilityToJSON(message.status));
     if (message.blockCount) {
-      obj.blockCount = message.blockCount.map((e) =>
-        (e || Long.UZERO).toString(),
-      );
+      obj.blockCount = message.blockCount.map(e => (e || Long.UZERO).toString());
     } else {
       obj.blockCount = [];
     }
     if (message.minerIds) {
-      obj.minerIds = message.minerIds.map((e) => e);
+      obj.minerIds = message.minerIds.map(e => e);
     } else {
       obj.minerIds = [];
     }
-    message.inferenceType !== undefined &&
-      (obj.inferenceType = inferenceTypeToJSON(message.inferenceType));
+    message.inferenceType !== undefined && (obj.inferenceType = inferenceTypeToJSON(message.inferenceType));
     message.modelName !== undefined && (obj.modelName = message.modelName);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterOrchestrator>, I>>(
-    object: I,
-  ): MsgRegisterOrchestrator {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterOrchestrator>, I>>(object: I): MsgRegisterOrchestrator {
     const message = createBaseMsgRegisterOrchestrator();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
     message.status = object.status ?? 0;
-    message.blockCount = object.blockCount?.map((e) => Long.fromValue(e)) || [];
-    message.minerIds = object.minerIds?.map((e) => e) || [];
+    message.blockCount = object.blockCount?.map(e => Long.fromValue(e)) || [];
+    message.minerIds = object.minerIds?.map(e => e) || [];
     message.inferenceType = object.inferenceType ?? 0;
-    message.modelName = object.modelName ?? '';
+    message.modelName = object.modelName ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgRegisterOrchestratorResponse(): MsgRegisterOrchestratorResponse {
   return {};
 }
 export const MsgRegisterOrchestratorResponse = {
-  typeUrl: '/dht.v1.MsgRegisterOrchestratorResponse',
-  encode(
-    _: MsgRegisterOrchestratorResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgRegisterOrchestratorResponse",
+  encode(_: MsgRegisterOrchestratorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgRegisterOrchestratorResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterOrchestratorResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterOrchestratorResponse();
@@ -1536,43 +1405,33 @@ export const MsgRegisterOrchestratorResponse = {
     const obj = createBaseMsgRegisterOrchestratorResponse();
     return obj;
   },
-  toJSON(
-    _: MsgRegisterOrchestratorResponse,
-  ): JsonSafe<MsgRegisterOrchestratorResponse> {
+  toJSON(_: MsgRegisterOrchestratorResponse): JsonSafe<MsgRegisterOrchestratorResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterOrchestratorResponse>, I>>(
-    _: I,
-  ): MsgRegisterOrchestratorResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterOrchestratorResponse>, I>>(_: I): MsgRegisterOrchestratorResponse {
     const message = createBaseMsgRegisterOrchestratorResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteOrchestrator(): MsgDeleteOrchestrator {
   return {
-    creator: '',
-    nodeId: '',
+    creator: "",
+    nodeId: ""
   };
 }
 export const MsgDeleteOrchestrator = {
-  typeUrl: '/dht.v1.MsgDeleteOrchestrator',
-  encode(
-    message: MsgDeleteOrchestrator,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgDeleteOrchestrator",
+  encode(message: MsgDeleteOrchestrator, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgDeleteOrchestrator {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteOrchestrator {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteOrchestrator();
@@ -1604,30 +1463,22 @@ export const MsgDeleteOrchestrator = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteOrchestrator>, I>>(
-    object: I,
-  ): MsgDeleteOrchestrator {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteOrchestrator>, I>>(object: I): MsgDeleteOrchestrator {
     const message = createBaseMsgDeleteOrchestrator();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgDeleteOrchestratorResponse(): MsgDeleteOrchestratorResponse {
   return {};
 }
 export const MsgDeleteOrchestratorResponse = {
-  typeUrl: '/dht.v1.MsgDeleteOrchestratorResponse',
-  encode(
-    _: MsgDeleteOrchestratorResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgDeleteOrchestratorResponse",
+  encode(_: MsgDeleteOrchestratorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgDeleteOrchestratorResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteOrchestratorResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteOrchestratorResponse();
@@ -1645,36 +1496,29 @@ export const MsgDeleteOrchestratorResponse = {
     const obj = createBaseMsgDeleteOrchestratorResponse();
     return obj;
   },
-  toJSON(
-    _: MsgDeleteOrchestratorResponse,
-  ): JsonSafe<MsgDeleteOrchestratorResponse> {
+  toJSON(_: MsgDeleteOrchestratorResponse): JsonSafe<MsgDeleteOrchestratorResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteOrchestratorResponse>, I>>(
-    _: I,
-  ): MsgDeleteOrchestratorResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteOrchestratorResponse>, I>>(_: I): MsgDeleteOrchestratorResponse {
     const message = createBaseMsgDeleteOrchestratorResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgAddMinerDeposit(): MsgAddMinerDeposit {
   return {
-    depositor: '',
-    nodeId: '',
-    amount: Coin.fromPartial({}),
+    depositor: "",
+    nodeId: "",
+    amount: Coin.fromPartial({})
   };
 }
 export const MsgAddMinerDeposit = {
-  typeUrl: '/dht.v1.MsgAddMinerDeposit',
-  encode(
-    message: MsgAddMinerDeposit,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.depositor !== '') {
+  typeUrl: "/dht.v1.MsgAddMinerDeposit",
+  encode(message: MsgAddMinerDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.depositor !== "") {
       writer.uint32(10).string(message.depositor);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.amount !== undefined) {
@@ -1716,37 +1560,28 @@ export const MsgAddMinerDeposit = {
     const obj: any = {};
     message.depositor !== undefined && (obj.depositor = message.depositor);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.amount !== undefined &&
-      (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgAddMinerDeposit>, I>>(
-    object: I,
-  ): MsgAddMinerDeposit {
+  fromPartial<I extends Exact<DeepPartial<MsgAddMinerDeposit>, I>>(object: I): MsgAddMinerDeposit {
     const message = createBaseMsgAddMinerDeposit();
-    message.depositor = object.depositor ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.depositor = object.depositor ?? "";
+    message.nodeId = object.nodeId ?? "";
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = Coin.fromPartial(object.amount);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgAddMinerDepositResponse(): MsgAddMinerDepositResponse {
   return {};
 }
 export const MsgAddMinerDepositResponse = {
-  typeUrl: '/dht.v1.MsgAddMinerDepositResponse',
-  encode(
-    _: MsgAddMinerDepositResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgAddMinerDepositResponse",
+  encode(_: MsgAddMinerDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgAddMinerDepositResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddMinerDepositResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddMinerDepositResponse();
@@ -1768,37 +1603,32 @@ export const MsgAddMinerDepositResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgAddMinerDepositResponse>, I>>(
-    _: I,
-  ): MsgAddMinerDepositResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgAddMinerDepositResponse>, I>>(_: I): MsgAddMinerDepositResponse {
     const message = createBaseMsgAddMinerDepositResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgWithdrawMiner(): MsgWithdrawMiner {
   return {
-    depositor: '',
-    nodeId: '',
+    depositor: "",
+    nodeId: "",
     amount: Coin.fromPartial({}),
-    receiver: '',
+    receiver: ""
   };
 }
 export const MsgWithdrawMiner = {
-  typeUrl: '/dht.v1.MsgWithdrawMiner',
-  encode(
-    message: MsgWithdrawMiner,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.depositor !== '') {
+  typeUrl: "/dht.v1.MsgWithdrawMiner",
+  encode(message: MsgWithdrawMiner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.depositor !== "") {
       writer.uint32(10).string(message.depositor);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.amount !== undefined) {
       Coin.encode(message.amount, writer.uint32(26).fork()).ldelim();
     }
-    if (message.receiver !== '') {
+    if (message.receiver !== "") {
       writer.uint32(34).string(message.receiver);
     }
     return writer;
@@ -1841,39 +1671,30 @@ export const MsgWithdrawMiner = {
     const obj: any = {};
     message.depositor !== undefined && (obj.depositor = message.depositor);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.amount !== undefined &&
-      (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     message.receiver !== undefined && (obj.receiver = message.receiver);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgWithdrawMiner>, I>>(
-    object: I,
-  ): MsgWithdrawMiner {
+  fromPartial<I extends Exact<DeepPartial<MsgWithdrawMiner>, I>>(object: I): MsgWithdrawMiner {
     const message = createBaseMsgWithdrawMiner();
-    message.depositor = object.depositor ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.depositor = object.depositor ?? "";
+    message.nodeId = object.nodeId ?? "";
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = Coin.fromPartial(object.amount);
     }
-    message.receiver = object.receiver ?? '';
+    message.receiver = object.receiver ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgWithdrawMinerResponse(): MsgWithdrawMinerResponse {
   return {};
 }
 export const MsgWithdrawMinerResponse = {
-  typeUrl: '/dht.v1.MsgWithdrawMinerResponse',
-  encode(
-    _: MsgWithdrawMinerResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgWithdrawMinerResponse",
+  encode(_: MsgWithdrawMinerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgWithdrawMinerResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawMinerResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawMinerResponse();
@@ -1895,30 +1716,25 @@ export const MsgWithdrawMinerResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgWithdrawMinerResponse>, I>>(
-    _: I,
-  ): MsgWithdrawMinerResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgWithdrawMinerResponse>, I>>(_: I): MsgWithdrawMinerResponse {
     const message = createBaseMsgWithdrawMinerResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgAddOrchestratorDeposit(): MsgAddOrchestratorDeposit {
   return {
-    depositor: '',
-    nodeId: '',
-    amount: Coin.fromPartial({}),
+    depositor: "",
+    nodeId: "",
+    amount: Coin.fromPartial({})
   };
 }
 export const MsgAddOrchestratorDeposit = {
-  typeUrl: '/dht.v1.MsgAddOrchestratorDeposit',
-  encode(
-    message: MsgAddOrchestratorDeposit,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.depositor !== '') {
+  typeUrl: "/dht.v1.MsgAddOrchestratorDeposit",
+  encode(message: MsgAddOrchestratorDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.depositor !== "") {
       writer.uint32(10).string(message.depositor);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.amount !== undefined) {
@@ -1926,10 +1742,7 @@ export const MsgAddOrchestratorDeposit = {
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgAddOrchestratorDeposit {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddOrchestratorDeposit {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddOrchestratorDeposit();
@@ -1959,43 +1772,32 @@ export const MsgAddOrchestratorDeposit = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(
-    message: MsgAddOrchestratorDeposit,
-  ): JsonSafe<MsgAddOrchestratorDeposit> {
+  toJSON(message: MsgAddOrchestratorDeposit): JsonSafe<MsgAddOrchestratorDeposit> {
     const obj: any = {};
     message.depositor !== undefined && (obj.depositor = message.depositor);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.amount !== undefined &&
-      (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgAddOrchestratorDeposit>, I>>(
-    object: I,
-  ): MsgAddOrchestratorDeposit {
+  fromPartial<I extends Exact<DeepPartial<MsgAddOrchestratorDeposit>, I>>(object: I): MsgAddOrchestratorDeposit {
     const message = createBaseMsgAddOrchestratorDeposit();
-    message.depositor = object.depositor ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.depositor = object.depositor ?? "";
+    message.nodeId = object.nodeId ?? "";
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = Coin.fromPartial(object.amount);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgAddOrchestratorDepositResponse(): MsgAddOrchestratorDepositResponse {
   return {};
 }
 export const MsgAddOrchestratorDepositResponse = {
-  typeUrl: '/dht.v1.MsgAddOrchestratorDepositResponse',
-  encode(
-    _: MsgAddOrchestratorDepositResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgAddOrchestratorDepositResponse",
+  encode(_: MsgAddOrchestratorDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgAddOrchestratorDepositResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddOrchestratorDepositResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddOrchestratorDepositResponse();
@@ -2013,51 +1815,41 @@ export const MsgAddOrchestratorDepositResponse = {
     const obj = createBaseMsgAddOrchestratorDepositResponse();
     return obj;
   },
-  toJSON(
-    _: MsgAddOrchestratorDepositResponse,
-  ): JsonSafe<MsgAddOrchestratorDepositResponse> {
+  toJSON(_: MsgAddOrchestratorDepositResponse): JsonSafe<MsgAddOrchestratorDepositResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<
-    I extends Exact<DeepPartial<MsgAddOrchestratorDepositResponse>, I>,
-  >(_: I): MsgAddOrchestratorDepositResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgAddOrchestratorDepositResponse>, I>>(_: I): MsgAddOrchestratorDepositResponse {
     const message = createBaseMsgAddOrchestratorDepositResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgWithdrawOrchestrator(): MsgWithdrawOrchestrator {
   return {
-    depositor: '',
-    nodeId: '',
+    depositor: "",
+    nodeId: "",
     amount: Coin.fromPartial({}),
-    receiver: '',
+    receiver: ""
   };
 }
 export const MsgWithdrawOrchestrator = {
-  typeUrl: '/dht.v1.MsgWithdrawOrchestrator',
-  encode(
-    message: MsgWithdrawOrchestrator,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.depositor !== '') {
+  typeUrl: "/dht.v1.MsgWithdrawOrchestrator",
+  encode(message: MsgWithdrawOrchestrator, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.depositor !== "") {
       writer.uint32(10).string(message.depositor);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.amount !== undefined) {
       Coin.encode(message.amount, writer.uint32(26).fork()).ldelim();
     }
-    if (message.receiver !== '') {
+    if (message.receiver !== "") {
       writer.uint32(34).string(message.receiver);
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgWithdrawOrchestrator {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawOrchestrator {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawOrchestrator();
@@ -2095,39 +1887,30 @@ export const MsgWithdrawOrchestrator = {
     const obj: any = {};
     message.depositor !== undefined && (obj.depositor = message.depositor);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.amount !== undefined &&
-      (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     message.receiver !== undefined && (obj.receiver = message.receiver);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgWithdrawOrchestrator>, I>>(
-    object: I,
-  ): MsgWithdrawOrchestrator {
+  fromPartial<I extends Exact<DeepPartial<MsgWithdrawOrchestrator>, I>>(object: I): MsgWithdrawOrchestrator {
     const message = createBaseMsgWithdrawOrchestrator();
-    message.depositor = object.depositor ?? '';
-    message.nodeId = object.nodeId ?? '';
+    message.depositor = object.depositor ?? "";
+    message.nodeId = object.nodeId ?? "";
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = Coin.fromPartial(object.amount);
     }
-    message.receiver = object.receiver ?? '';
+    message.receiver = object.receiver ?? "";
     return message;
-  },
+  }
 };
 function createBaseMsgWithdrawOrchestratorResponse(): MsgWithdrawOrchestratorResponse {
   return {};
 }
 export const MsgWithdrawOrchestratorResponse = {
-  typeUrl: '/dht.v1.MsgWithdrawOrchestratorResponse',
-  encode(
-    _: MsgWithdrawOrchestratorResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgWithdrawOrchestratorResponse",
+  encode(_: MsgWithdrawOrchestratorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgWithdrawOrchestratorResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawOrchestratorResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawOrchestratorResponse();
@@ -2145,36 +1928,29 @@ export const MsgWithdrawOrchestratorResponse = {
     const obj = createBaseMsgWithdrawOrchestratorResponse();
     return obj;
   },
-  toJSON(
-    _: MsgWithdrawOrchestratorResponse,
-  ): JsonSafe<MsgWithdrawOrchestratorResponse> {
+  toJSON(_: MsgWithdrawOrchestratorResponse): JsonSafe<MsgWithdrawOrchestratorResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgWithdrawOrchestratorResponse>, I>>(
-    _: I,
-  ): MsgWithdrawOrchestratorResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgWithdrawOrchestratorResponse>, I>>(_: I): MsgWithdrawOrchestratorResponse {
     const message = createBaseMsgWithdrawOrchestratorResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateNodeLabel(): MsgUpdateNodeLabel {
   return {
-    creator: '',
-    nodeId: '',
-    labels: [],
+    creator: "",
+    nodeId: "",
+    labels: []
   };
 }
 export const MsgUpdateNodeLabel = {
-  typeUrl: '/dht.v1.MsgUpdateNodeLabel',
-  encode(
-    message: MsgUpdateNodeLabel,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgUpdateNodeLabel",
+  encode(message: MsgUpdateNodeLabel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     for (const v of message.labels) {
@@ -2209,8 +1985,7 @@ export const MsgUpdateNodeLabel = {
     const obj = createBaseMsgUpdateNodeLabel();
     if (isSet(object.creator)) obj.creator = String(object.creator);
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
-    if (Array.isArray(object?.labels))
-      obj.labels = object.labels.map((e: any) => String(e));
+    if (Array.isArray(object?.labels)) obj.labels = object.labels.map((e: any) => String(e));
     return obj;
   },
   toJSON(message: MsgUpdateNodeLabel): JsonSafe<MsgUpdateNodeLabel> {
@@ -2218,37 +1993,29 @@ export const MsgUpdateNodeLabel = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     if (message.labels) {
-      obj.labels = message.labels.map((e) => e);
+      obj.labels = message.labels.map(e => e);
     } else {
       obj.labels = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateNodeLabel>, I>>(
-    object: I,
-  ): MsgUpdateNodeLabel {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateNodeLabel>, I>>(object: I): MsgUpdateNodeLabel {
     const message = createBaseMsgUpdateNodeLabel();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
-    message.labels = object.labels?.map((e) => e) || [];
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
+    message.labels = object.labels?.map(e => e) || [];
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateNodeLabelResponse(): MsgUpdateNodeLabelResponse {
   return {};
 }
 export const MsgUpdateNodeLabelResponse = {
-  typeUrl: '/dht.v1.MsgUpdateNodeLabelResponse',
-  encode(
-    _: MsgUpdateNodeLabelResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgUpdateNodeLabelResponse",
+  encode(_: MsgUpdateNodeLabelResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateNodeLabelResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateNodeLabelResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateNodeLabelResponse();
@@ -2270,31 +2037,26 @@ export const MsgUpdateNodeLabelResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateNodeLabelResponse>, I>>(
-    _: I,
-  ): MsgUpdateNodeLabelResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateNodeLabelResponse>, I>>(_: I): MsgUpdateNodeLabelResponse {
     const message = createBaseMsgUpdateNodeLabelResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateModel(): MsgUpdateModel {
   return {
-    account: '',
-    modelName: '',
+    account: "",
+    modelName: "",
     allowList: [],
-    tokenPrice: TokenPrice.fromPartial({}),
+    tokenPrice: TokenPrice.fromPartial({})
   };
 }
 export const MsgUpdateModel = {
-  typeUrl: '/dht.v1.MsgUpdateModel',
-  encode(
-    message: MsgUpdateModel,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.account !== '') {
+  typeUrl: "/dht.v1.MsgUpdateModel",
+  encode(message: MsgUpdateModel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
-    if (message.modelName !== '') {
+    if (message.modelName !== "") {
       writer.uint32(18).string(message.modelName);
     }
     for (const v of message.allowList) {
@@ -2335,10 +2097,8 @@ export const MsgUpdateModel = {
     const obj = createBaseMsgUpdateModel();
     if (isSet(object.account)) obj.account = String(object.account);
     if (isSet(object.modelName)) obj.modelName = String(object.modelName);
-    if (Array.isArray(object?.allowList))
-      obj.allowList = object.allowList.map((e: any) => String(e));
-    if (isSet(object.tokenPrice))
-      obj.tokenPrice = TokenPrice.fromJSON(object.tokenPrice);
+    if (Array.isArray(object?.allowList)) obj.allowList = object.allowList.map((e: any) => String(e));
+    if (isSet(object.tokenPrice)) obj.tokenPrice = TokenPrice.fromJSON(object.tokenPrice);
     return obj;
   },
   toJSON(message: MsgUpdateModel): JsonSafe<MsgUpdateModel> {
@@ -2346,44 +2106,33 @@ export const MsgUpdateModel = {
     message.account !== undefined && (obj.account = message.account);
     message.modelName !== undefined && (obj.modelName = message.modelName);
     if (message.allowList) {
-      obj.allowList = message.allowList.map((e) => e);
+      obj.allowList = message.allowList.map(e => e);
     } else {
       obj.allowList = [];
     }
-    message.tokenPrice !== undefined &&
-      (obj.tokenPrice = message.tokenPrice
-        ? TokenPrice.toJSON(message.tokenPrice)
-        : undefined);
+    message.tokenPrice !== undefined && (obj.tokenPrice = message.tokenPrice ? TokenPrice.toJSON(message.tokenPrice) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateModel>, I>>(
-    object: I,
-  ): MsgUpdateModel {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateModel>, I>>(object: I): MsgUpdateModel {
     const message = createBaseMsgUpdateModel();
-    message.account = object.account ?? '';
-    message.modelName = object.modelName ?? '';
-    message.allowList = object.allowList?.map((e) => e) || [];
+    message.account = object.account ?? "";
+    message.modelName = object.modelName ?? "";
+    message.allowList = object.allowList?.map(e => e) || [];
     if (object.tokenPrice !== undefined && object.tokenPrice !== null) {
       message.tokenPrice = TokenPrice.fromPartial(object.tokenPrice);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateModelResponse(): MsgUpdateModelResponse {
   return {};
 }
 export const MsgUpdateModelResponse = {
-  typeUrl: '/dht.v1.MsgUpdateModelResponse',
-  encode(
-    _: MsgUpdateModelResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgUpdateModelResponse",
+  encode(_: MsgUpdateModelResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateModelResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateModelResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateModelResponse();
@@ -2405,26 +2154,21 @@ export const MsgUpdateModelResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateModelResponse>, I>>(
-    _: I,
-  ): MsgUpdateModelResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateModelResponse>, I>>(_: I): MsgUpdateModelResponse {
     const message = createBaseMsgUpdateModelResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateModelCreatorAllowList(): MsgUpdateModelCreatorAllowList {
   return {
-    account: '',
-    modelCreators: [],
+    account: "",
+    modelCreators: []
   };
 }
 export const MsgUpdateModelCreatorAllowList = {
-  typeUrl: '/dht.v1.MsgUpdateModelCreatorAllowList',
-  encode(
-    message: MsgUpdateModelCreatorAllowList,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.account !== '') {
+  typeUrl: "/dht.v1.MsgUpdateModelCreatorAllowList",
+  encode(message: MsgUpdateModelCreatorAllowList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
     for (const v of message.modelCreators) {
@@ -2432,10 +2176,7 @@ export const MsgUpdateModelCreatorAllowList = {
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateModelCreatorAllowList {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateModelCreatorAllowList {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateModelCreatorAllowList();
@@ -2458,46 +2199,35 @@ export const MsgUpdateModelCreatorAllowList = {
   fromJSON(object: any): MsgUpdateModelCreatorAllowList {
     const obj = createBaseMsgUpdateModelCreatorAllowList();
     if (isSet(object.account)) obj.account = String(object.account);
-    if (Array.isArray(object?.modelCreators))
-      obj.modelCreators = object.modelCreators.map((e: any) => String(e));
+    if (Array.isArray(object?.modelCreators)) obj.modelCreators = object.modelCreators.map((e: any) => String(e));
     return obj;
   },
-  toJSON(
-    message: MsgUpdateModelCreatorAllowList,
-  ): JsonSafe<MsgUpdateModelCreatorAllowList> {
+  toJSON(message: MsgUpdateModelCreatorAllowList): JsonSafe<MsgUpdateModelCreatorAllowList> {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
     if (message.modelCreators) {
-      obj.modelCreators = message.modelCreators.map((e) => e);
+      obj.modelCreators = message.modelCreators.map(e => e);
     } else {
       obj.modelCreators = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateModelCreatorAllowList>, I>>(
-    object: I,
-  ): MsgUpdateModelCreatorAllowList {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateModelCreatorAllowList>, I>>(object: I): MsgUpdateModelCreatorAllowList {
     const message = createBaseMsgUpdateModelCreatorAllowList();
-    message.account = object.account ?? '';
-    message.modelCreators = object.modelCreators?.map((e) => e) || [];
+    message.account = object.account ?? "";
+    message.modelCreators = object.modelCreators?.map(e => e) || [];
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateModelCreatorAllowListResponse(): MsgUpdateModelCreatorAllowListResponse {
   return {};
 }
 export const MsgUpdateModelCreatorAllowListResponse = {
-  typeUrl: '/dht.v1.MsgUpdateModelCreatorAllowListResponse',
-  encode(
-    _: MsgUpdateModelCreatorAllowListResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgUpdateModelCreatorAllowListResponse",
+  encode(_: MsgUpdateModelCreatorAllowListResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateModelCreatorAllowListResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateModelCreatorAllowListResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateModelCreatorAllowListResponse();
@@ -2515,36 +2245,29 @@ export const MsgUpdateModelCreatorAllowListResponse = {
     const obj = createBaseMsgUpdateModelCreatorAllowListResponse();
     return obj;
   },
-  toJSON(
-    _: MsgUpdateModelCreatorAllowListResponse,
-  ): JsonSafe<MsgUpdateModelCreatorAllowListResponse> {
+  toJSON(_: MsgUpdateModelCreatorAllowListResponse): JsonSafe<MsgUpdateModelCreatorAllowListResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<
-    I extends Exact<DeepPartial<MsgUpdateModelCreatorAllowListResponse>, I>,
-  >(_: I): MsgUpdateModelCreatorAllowListResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateModelCreatorAllowListResponse>, I>>(_: I): MsgUpdateModelCreatorAllowListResponse {
     const message = createBaseMsgUpdateModelCreatorAllowListResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateOrchestratorReputation(): MsgUpdateOrchestratorReputation {
   return {
-    creator: '',
-    nodeId: '',
-    reputations: [],
+    creator: "",
+    nodeId: "",
+    reputations: []
   };
 }
 export const MsgUpdateOrchestratorReputation = {
-  typeUrl: '/dht.v1.MsgUpdateOrchestratorReputation',
-  encode(
-    message: MsgUpdateOrchestratorReputation,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgUpdateOrchestratorReputation",
+  encode(message: MsgUpdateOrchestratorReputation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(18).string(message.nodeId);
     }
     for (const v of message.reputations) {
@@ -2552,10 +2275,7 @@ export const MsgUpdateOrchestratorReputation = {
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateOrchestratorReputation {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateOrchestratorReputation {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateOrchestratorReputation();
@@ -2582,53 +2302,37 @@ export const MsgUpdateOrchestratorReputation = {
     const obj = createBaseMsgUpdateOrchestratorReputation();
     if (isSet(object.creator)) obj.creator = String(object.creator);
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
-    if (Array.isArray(object?.reputations))
-      obj.reputations = object.reputations.map((e: any) =>
-        Reputation.fromJSON(e),
-      );
+    if (Array.isArray(object?.reputations)) obj.reputations = object.reputations.map((e: any) => Reputation.fromJSON(e));
     return obj;
   },
-  toJSON(
-    message: MsgUpdateOrchestratorReputation,
-  ): JsonSafe<MsgUpdateOrchestratorReputation> {
+  toJSON(message: MsgUpdateOrchestratorReputation): JsonSafe<MsgUpdateOrchestratorReputation> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     if (message.reputations) {
-      obj.reputations = message.reputations.map((e) =>
-        e ? Reputation.toJSON(e) : undefined,
-      );
+      obj.reputations = message.reputations.map(e => e ? Reputation.toJSON(e) : undefined);
     } else {
       obj.reputations = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateOrchestratorReputation>, I>>(
-    object: I,
-  ): MsgUpdateOrchestratorReputation {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateOrchestratorReputation>, I>>(object: I): MsgUpdateOrchestratorReputation {
     const message = createBaseMsgUpdateOrchestratorReputation();
-    message.creator = object.creator ?? '';
-    message.nodeId = object.nodeId ?? '';
-    message.reputations =
-      object.reputations?.map((e) => Reputation.fromPartial(e)) || [];
+    message.creator = object.creator ?? "";
+    message.nodeId = object.nodeId ?? "";
+    message.reputations = object.reputations?.map(e => Reputation.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseMsgUpdateOrchestratorReputationResponse(): MsgUpdateOrchestratorReputationResponse {
   return {};
 }
 export const MsgUpdateOrchestratorReputationResponse = {
-  typeUrl: '/dht.v1.MsgUpdateOrchestratorReputationResponse',
-  encode(
-    _: MsgUpdateOrchestratorReputationResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgUpdateOrchestratorReputationResponse",
+  encode(_: MsgUpdateOrchestratorReputationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgUpdateOrchestratorReputationResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateOrchestratorReputationResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateOrchestratorReputationResponse();
@@ -2646,46 +2350,33 @@ export const MsgUpdateOrchestratorReputationResponse = {
     const obj = createBaseMsgUpdateOrchestratorReputationResponse();
     return obj;
   },
-  toJSON(
-    _: MsgUpdateOrchestratorReputationResponse,
-  ): JsonSafe<MsgUpdateOrchestratorReputationResponse> {
+  toJSON(_: MsgUpdateOrchestratorReputationResponse): JsonSafe<MsgUpdateOrchestratorReputationResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<
-    I extends Exact<DeepPartial<MsgUpdateOrchestratorReputationResponse>, I>,
-  >(_: I): MsgUpdateOrchestratorReputationResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateOrchestratorReputationResponse>, I>>(_: I): MsgUpdateOrchestratorReputationResponse {
     const message = createBaseMsgUpdateOrchestratorReputationResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgSetReputationParams(): MsgSetReputationParams {
   return {
-    creator: '',
-    params: ReputationParams.fromPartial({}),
+    creator: "",
+    params: ReputationParams.fromPartial({})
   };
 }
 export const MsgSetReputationParams = {
-  typeUrl: '/dht.v1.MsgSetReputationParams',
-  encode(
-    message: MsgSetReputationParams,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.creator !== '') {
+  typeUrl: "/dht.v1.MsgSetReputationParams",
+  encode(message: MsgSetReputationParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
     if (message.params !== undefined) {
-      ReputationParams.encode(
-        message.params,
-        writer.uint32(18).fork(),
-      ).ldelim();
+      ReputationParams.encode(message.params, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgSetReputationParams {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetReputationParams {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetReputationParams();
@@ -2708,45 +2399,33 @@ export const MsgSetReputationParams = {
   fromJSON(object: any): MsgSetReputationParams {
     const obj = createBaseMsgSetReputationParams();
     if (isSet(object.creator)) obj.creator = String(object.creator);
-    if (isSet(object.params))
-      obj.params = ReputationParams.fromJSON(object.params);
+    if (isSet(object.params)) obj.params = ReputationParams.fromJSON(object.params);
     return obj;
   },
   toJSON(message: MsgSetReputationParams): JsonSafe<MsgSetReputationParams> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.params !== undefined &&
-      (obj.params = message.params
-        ? ReputationParams.toJSON(message.params)
-        : undefined);
+    message.params !== undefined && (obj.params = message.params ? ReputationParams.toJSON(message.params) : undefined);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgSetReputationParams>, I>>(
-    object: I,
-  ): MsgSetReputationParams {
+  fromPartial<I extends Exact<DeepPartial<MsgSetReputationParams>, I>>(object: I): MsgSetReputationParams {
     const message = createBaseMsgSetReputationParams();
-    message.creator = object.creator ?? '';
+    message.creator = object.creator ?? "";
     if (object.params !== undefined && object.params !== null) {
       message.params = ReputationParams.fromPartial(object.params);
     }
     return message;
-  },
+  }
 };
 function createBaseMsgSetReputationParamsResponse(): MsgSetReputationParamsResponse {
   return {};
 }
 export const MsgSetReputationParamsResponse = {
-  typeUrl: '/dht.v1.MsgSetReputationParamsResponse',
-  encode(
-    _: MsgSetReputationParamsResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/dht.v1.MsgSetReputationParamsResponse",
+  encode(_: MsgSetReputationParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgSetReputationParamsResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetReputationParamsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetReputationParamsResponse();
@@ -2764,18 +2443,246 @@ export const MsgSetReputationParamsResponse = {
     const obj = createBaseMsgSetReputationParamsResponse();
     return obj;
   },
-  toJSON(
-    _: MsgSetReputationParamsResponse,
-  ): JsonSafe<MsgSetReputationParamsResponse> {
+  toJSON(_: MsgSetReputationParamsResponse): JsonSafe<MsgSetReputationParamsResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgSetReputationParamsResponse>, I>>(
-    _: I,
-  ): MsgSetReputationParamsResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgSetReputationParamsResponse>, I>>(_: I): MsgSetReputationParamsResponse {
     const message = createBaseMsgSetReputationParamsResponse();
     return message;
+  }
+};
+function createBaseMsgClaimTGEReward(): MsgClaimTGEReward {
+  return {
+    sender: "",
+    receiver: ""
+  };
+}
+export const MsgClaimTGEReward = {
+  typeUrl: "/dht.v1.MsgClaimTGEReward",
+  encode(message: MsgClaimTGEReward, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sender !== "") {
+      writer.uint32(10).string(message.sender);
+    }
+    if (message.receiver !== "") {
+      writer.uint32(18).string(message.receiver);
+    }
+    return writer;
   },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClaimTGEReward {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgClaimTGEReward();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sender = reader.string();
+          break;
+        case 2:
+          message.receiver = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgClaimTGEReward {
+    const obj = createBaseMsgClaimTGEReward();
+    if (isSet(object.sender)) obj.sender = String(object.sender);
+    if (isSet(object.receiver)) obj.receiver = String(object.receiver);
+    return obj;
+  },
+  toJSON(message: MsgClaimTGEReward): JsonSafe<MsgClaimTGEReward> {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.receiver !== undefined && (obj.receiver = message.receiver);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgClaimTGEReward>, I>>(object: I): MsgClaimTGEReward {
+    const message = createBaseMsgClaimTGEReward();
+    message.sender = object.sender ?? "";
+    message.receiver = object.receiver ?? "";
+    return message;
+  }
+};
+function createBaseMsgClaimTGERewardResponse(): MsgClaimTGERewardResponse {
+  return {
+    exchanged: Coin.fromPartial({}),
+    obtained: Coin.fromPartial({}),
+    exchangeRate: ""
+  };
+}
+export const MsgClaimTGERewardResponse = {
+  typeUrl: "/dht.v1.MsgClaimTGERewardResponse",
+  encode(message: MsgClaimTGERewardResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.exchanged !== undefined) {
+      Coin.encode(message.exchanged, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.obtained !== undefined) {
+      Coin.encode(message.obtained, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.exchangeRate !== "") {
+      writer.uint32(26).string(message.exchangeRate);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClaimTGERewardResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgClaimTGERewardResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.exchanged = Coin.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.obtained = Coin.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.exchangeRate = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgClaimTGERewardResponse {
+    const obj = createBaseMsgClaimTGERewardResponse();
+    if (isSet(object.exchanged)) obj.exchanged = Coin.fromJSON(object.exchanged);
+    if (isSet(object.obtained)) obj.obtained = Coin.fromJSON(object.obtained);
+    if (isSet(object.exchangeRate)) obj.exchangeRate = String(object.exchangeRate);
+    return obj;
+  },
+  toJSON(message: MsgClaimTGERewardResponse): JsonSafe<MsgClaimTGERewardResponse> {
+    const obj: any = {};
+    message.exchanged !== undefined && (obj.exchanged = message.exchanged ? Coin.toJSON(message.exchanged) : undefined);
+    message.obtained !== undefined && (obj.obtained = message.obtained ? Coin.toJSON(message.obtained) : undefined);
+    message.exchangeRate !== undefined && (obj.exchangeRate = message.exchangeRate);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgClaimTGERewardResponse>, I>>(object: I): MsgClaimTGERewardResponse {
+    const message = createBaseMsgClaimTGERewardResponse();
+    if (object.exchanged !== undefined && object.exchanged !== null) {
+      message.exchanged = Coin.fromPartial(object.exchanged);
+    }
+    if (object.obtained !== undefined && object.obtained !== null) {
+      message.obtained = Coin.fromPartial(object.obtained);
+    }
+    message.exchangeRate = object.exchangeRate ?? "";
+    return message;
+  }
+};
+function createBaseMsgSetDistributionConfig(): MsgSetDistributionConfig {
+  return {
+    admin: "",
+    config: DistributionConfig.fromPartial({})
+  };
+}
+export const MsgSetDistributionConfig = {
+  typeUrl: "/dht.v1.MsgSetDistributionConfig",
+  encode(message: MsgSetDistributionConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.admin !== "") {
+      writer.uint32(10).string(message.admin);
+    }
+    if (message.config !== undefined) {
+      DistributionConfig.encode(message.config, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetDistributionConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSetDistributionConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.admin = reader.string();
+          break;
+        case 2:
+          message.config = DistributionConfig.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgSetDistributionConfig {
+    const obj = createBaseMsgSetDistributionConfig();
+    if (isSet(object.admin)) obj.admin = String(object.admin);
+    if (isSet(object.config)) obj.config = DistributionConfig.fromJSON(object.config);
+    return obj;
+  },
+  toJSON(message: MsgSetDistributionConfig): JsonSafe<MsgSetDistributionConfig> {
+    const obj: any = {};
+    message.admin !== undefined && (obj.admin = message.admin);
+    message.config !== undefined && (obj.config = message.config ? DistributionConfig.toJSON(message.config) : undefined);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSetDistributionConfig>, I>>(object: I): MsgSetDistributionConfig {
+    const message = createBaseMsgSetDistributionConfig();
+    message.admin = object.admin ?? "";
+    if (object.config !== undefined && object.config !== null) {
+      message.config = DistributionConfig.fromPartial(object.config);
+    }
+    return message;
+  }
+};
+function createBaseMsgSetDistributionConfigResponse(): MsgSetDistributionConfigResponse {
+  return {
+    config: DistributionConfig.fromPartial({})
+  };
+}
+export const MsgSetDistributionConfigResponse = {
+  typeUrl: "/dht.v1.MsgSetDistributionConfigResponse",
+  encode(message: MsgSetDistributionConfigResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.config !== undefined) {
+      DistributionConfig.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetDistributionConfigResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSetDistributionConfigResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = DistributionConfig.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgSetDistributionConfigResponse {
+    const obj = createBaseMsgSetDistributionConfigResponse();
+    if (isSet(object.config)) obj.config = DistributionConfig.fromJSON(object.config);
+    return obj;
+  },
+  toJSON(message: MsgSetDistributionConfigResponse): JsonSafe<MsgSetDistributionConfigResponse> {
+    const obj: any = {};
+    message.config !== undefined && (obj.config = message.config ? DistributionConfig.toJSON(message.config) : undefined);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSetDistributionConfigResponse>, I>>(object: I): MsgSetDistributionConfigResponse {
+    const message = createBaseMsgSetDistributionConfigResponse();
+    if (object.config !== undefined && object.config !== null) {
+      message.config = DistributionConfig.fromPartial(object.config);
+    }
+    return message;
+  }
 };
 /** Msg defines the Msg service. */
 export interface Msg {
@@ -2784,10 +2691,11 @@ export interface Msg {
    * parameters. The authority defaults to the x/gov module account.
    */
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
-  /** UpdateModelCreatorAllowList defines a method for updating the model_creators. */
-  UpdateModelCreatorAllowList(
-    request: MsgUpdateModelCreatorAllowList,
-  ): Promise<MsgUpdateModelCreatorAllowListResponse>;
+  /**
+   * UpdateModelCreatorAllowList defines a method for updating the
+   * model_creators.
+   */
+  UpdateModelCreatorAllowList(request: MsgUpdateModelCreatorAllowList): Promise<MsgUpdateModelCreatorAllowListResponse>;
   /** RegisterModel defines a method for registering a new model. */
   RegisterModel(request: MsgRegisterModel): Promise<MsgRegisterModelResponse>;
   /** UpdateModel defines a method for updating an existing model. */
@@ -2795,9 +2703,7 @@ export interface Msg {
   /** DeleteModel defines a method for deleting an existing model. */
   DeleteModel(request: MsgDeleteModel): Promise<MsgDeleteModelResponse>;
   /** SetModelConfig defines a method for setting the model config. */
-  SetModelConfig(
-    request: MsgSetModelConfig,
-  ): Promise<MsgSetModelConfigResponse>;
+  SetModelConfig(request: MsgSetModelConfig): Promise<MsgSetModelConfigResponse>;
   /** RegisterNode defines a method for registering a new node. */
   RegisterNode(request: MsgRegisterNode): Promise<MsgRegisterNodeResponse>;
   /** DeleteNode defines a method for deleting an existing node. */
@@ -2808,50 +2714,46 @@ export interface Msg {
   DeleteMiner(request: MsgDeleteMiner): Promise<MsgDeleteMinerResponse>;
   UpdateMiner(request: MsgUpdateMiner): Promise<MsgUpdateMinerResponse>;
   /** RegisterOrchestrator defines a method for registering a new orchestrator. */
-  RegisterOrchestrator(
-    request: MsgRegisterOrchestrator,
-  ): Promise<MsgRegisterOrchestratorResponse>;
+  RegisterOrchestrator(request: MsgRegisterOrchestrator): Promise<MsgRegisterOrchestratorResponse>;
   /** DeleteOrchestrator defines a method for deleting an existing orchestrator. */
-  DeleteOrchestrator(
-    request: MsgDeleteOrchestrator,
-  ): Promise<MsgDeleteOrchestratorResponse>;
+  DeleteOrchestrator(request: MsgDeleteOrchestrator): Promise<MsgDeleteOrchestratorResponse>;
   /** AddMinerDeposit defines a method for depositing tokens to the miner. */
-  AddMinerDeposit(
-    request: MsgAddMinerDeposit,
-  ): Promise<MsgAddMinerDepositResponse>;
+  AddMinerDeposit(request: MsgAddMinerDeposit): Promise<MsgAddMinerDepositResponse>;
   /** WithdrawMiner defines a method for withdrawing tokens from the miner. */
   WithdrawMiner(request: MsgWithdrawMiner): Promise<MsgWithdrawMinerResponse>;
-  /** AddOrchestratorDeposit defines a method for depositing tokens to the orchestrator. */
-  AddOrchestratorDeposit(
-    request: MsgAddOrchestratorDeposit,
-  ): Promise<MsgAddOrchestratorDepositResponse>;
-  /** WithdrawOrchestrator defines a method for withdrawing tokens from the orchestrator. */
-  WithdrawOrchestrator(
-    request: MsgWithdrawOrchestrator,
-  ): Promise<MsgWithdrawOrchestratorResponse>;
+  /**
+   * AddOrchestratorDeposit defines a method for depositing tokens to the
+   * orchestrator.
+   */
+  AddOrchestratorDeposit(request: MsgAddOrchestratorDeposit): Promise<MsgAddOrchestratorDepositResponse>;
+  /**
+   * WithdrawOrchestrator defines a method for withdrawing tokens from the
+   * orchestrator.
+   */
+  WithdrawOrchestrator(request: MsgWithdrawOrchestrator): Promise<MsgWithdrawOrchestratorResponse>;
   /**
    * TODO optimize and streamline interfaces
    * UpdateNodeLabel defines a method for updating the node label.
    */
-  UpdateNodeLabel(
-    request: MsgUpdateNodeLabel,
-  ): Promise<MsgUpdateNodeLabelResponse>;
-  /** UpdateOrchestratorReputation defines a method for updating the orchestrator reputation. */
-  UpdateOrchestratorReputation(
-    request: MsgUpdateOrchestratorReputation,
-  ): Promise<MsgUpdateOrchestratorReputationResponse>;
+  UpdateNodeLabel(request: MsgUpdateNodeLabel): Promise<MsgUpdateNodeLabelResponse>;
+  /**
+   * UpdateOrchestratorReputation defines a method for updating the orchestrator
+   * reputation.
+   */
+  UpdateOrchestratorReputation(request: MsgUpdateOrchestratorReputation): Promise<MsgUpdateOrchestratorReputationResponse>;
   /** SetReputationParams defines a method for setting the reputation parameters. */
-  SetReputationParams(
-    request: MsgSetReputationParams,
-  ): Promise<MsgSetReputationParamsResponse>;
+  SetReputationParams(request: MsgSetReputationParams): Promise<MsgSetReputationParamsResponse>;
+  /** ClaimTGEReward defines a method for claiming TGE reward. */
+  ClaimTGEReward(request: MsgClaimTGEReward): Promise<MsgClaimTGERewardResponse>;
+  /** SetDistributionConfig defines a method for setting distribution config. */
+  SetDistributionConfig(request: MsgSetDistributionConfig): Promise<MsgSetDistributionConfigResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.UpdateParams = this.UpdateParams.bind(this);
-    this.UpdateModelCreatorAllowList =
-      this.UpdateModelCreatorAllowList.bind(this);
+    this.UpdateModelCreatorAllowList = this.UpdateModelCreatorAllowList.bind(this);
     this.RegisterModel = this.RegisterModel.bind(this);
     this.UpdateModel = this.UpdateModel.bind(this);
     this.DeleteModel = this.DeleteModel.bind(this);
@@ -2868,188 +2770,119 @@ export class MsgClientImpl implements Msg {
     this.AddOrchestratorDeposit = this.AddOrchestratorDeposit.bind(this);
     this.WithdrawOrchestrator = this.WithdrawOrchestrator.bind(this);
     this.UpdateNodeLabel = this.UpdateNodeLabel.bind(this);
-    this.UpdateOrchestratorReputation =
-      this.UpdateOrchestratorReputation.bind(this);
+    this.UpdateOrchestratorReputation = this.UpdateOrchestratorReputation.bind(this);
     this.SetReputationParams = this.SetReputationParams.bind(this);
+    this.ClaimTGEReward = this.ClaimTGEReward.bind(this);
+    this.SetDistributionConfig = this.SetDistributionConfig.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'UpdateParams', data);
-    return promise.then((data) =>
-      MsgUpdateParamsResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "UpdateParams", data);
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
-  UpdateModelCreatorAllowList(
-    request: MsgUpdateModelCreatorAllowList,
-  ): Promise<MsgUpdateModelCreatorAllowListResponse> {
+  UpdateModelCreatorAllowList(request: MsgUpdateModelCreatorAllowList): Promise<MsgUpdateModelCreatorAllowListResponse> {
     const data = MsgUpdateModelCreatorAllowList.encode(request).finish();
-    const promise = this.rpc.request(
-      'dht.v1.Msg',
-      'UpdateModelCreatorAllowList',
-      data,
-    );
-    return promise.then((data) =>
-      MsgUpdateModelCreatorAllowListResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "UpdateModelCreatorAllowList", data);
+    return promise.then(data => MsgUpdateModelCreatorAllowListResponse.decode(new _m0.Reader(data)));
   }
   RegisterModel(request: MsgRegisterModel): Promise<MsgRegisterModelResponse> {
     const data = MsgRegisterModel.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'RegisterModel', data);
-    return promise.then((data) =>
-      MsgRegisterModelResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "RegisterModel", data);
+    return promise.then(data => MsgRegisterModelResponse.decode(new _m0.Reader(data)));
   }
   UpdateModel(request: MsgUpdateModel): Promise<MsgUpdateModelResponse> {
     const data = MsgUpdateModel.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'UpdateModel', data);
-    return promise.then((data) =>
-      MsgUpdateModelResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "UpdateModel", data);
+    return promise.then(data => MsgUpdateModelResponse.decode(new _m0.Reader(data)));
   }
   DeleteModel(request: MsgDeleteModel): Promise<MsgDeleteModelResponse> {
     const data = MsgDeleteModel.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'DeleteModel', data);
-    return promise.then((data) =>
-      MsgDeleteModelResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "DeleteModel", data);
+    return promise.then(data => MsgDeleteModelResponse.decode(new _m0.Reader(data)));
   }
-  SetModelConfig(
-    request: MsgSetModelConfig,
-  ): Promise<MsgSetModelConfigResponse> {
+  SetModelConfig(request: MsgSetModelConfig): Promise<MsgSetModelConfigResponse> {
     const data = MsgSetModelConfig.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'SetModelConfig', data);
-    return promise.then((data) =>
-      MsgSetModelConfigResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "SetModelConfig", data);
+    return promise.then(data => MsgSetModelConfigResponse.decode(new _m0.Reader(data)));
   }
   RegisterNode(request: MsgRegisterNode): Promise<MsgRegisterNodeResponse> {
     const data = MsgRegisterNode.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'RegisterNode', data);
-    return promise.then((data) =>
-      MsgRegisterNodeResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "RegisterNode", data);
+    return promise.then(data => MsgRegisterNodeResponse.decode(new _m0.Reader(data)));
   }
   DeleteNode(request: MsgDeleteNode): Promise<MsgDeleteNodeResponse> {
     const data = MsgDeleteNode.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'DeleteNode', data);
-    return promise.then((data) =>
-      MsgDeleteNodeResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "DeleteNode", data);
+    return promise.then(data => MsgDeleteNodeResponse.decode(new _m0.Reader(data)));
   }
   RegisterMiner(request: MsgRegisterMiner): Promise<MsgRegisterMinerResponse> {
     const data = MsgRegisterMiner.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'RegisterMiner', data);
-    return promise.then((data) =>
-      MsgRegisterMinerResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "RegisterMiner", data);
+    return promise.then(data => MsgRegisterMinerResponse.decode(new _m0.Reader(data)));
   }
   DeleteMiner(request: MsgDeleteMiner): Promise<MsgDeleteMinerResponse> {
     const data = MsgDeleteMiner.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'DeleteMiner', data);
-    return promise.then((data) =>
-      MsgDeleteMinerResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "DeleteMiner", data);
+    return promise.then(data => MsgDeleteMinerResponse.decode(new _m0.Reader(data)));
   }
   UpdateMiner(request: MsgUpdateMiner): Promise<MsgUpdateMinerResponse> {
     const data = MsgUpdateMiner.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'UpdateMiner', data);
-    return promise.then((data) =>
-      MsgUpdateMinerResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "UpdateMiner", data);
+    return promise.then(data => MsgUpdateMinerResponse.decode(new _m0.Reader(data)));
   }
-  RegisterOrchestrator(
-    request: MsgRegisterOrchestrator,
-  ): Promise<MsgRegisterOrchestratorResponse> {
+  RegisterOrchestrator(request: MsgRegisterOrchestrator): Promise<MsgRegisterOrchestratorResponse> {
     const data = MsgRegisterOrchestrator.encode(request).finish();
-    const promise = this.rpc.request(
-      'dht.v1.Msg',
-      'RegisterOrchestrator',
-      data,
-    );
-    return promise.then((data) =>
-      MsgRegisterOrchestratorResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "RegisterOrchestrator", data);
+    return promise.then(data => MsgRegisterOrchestratorResponse.decode(new _m0.Reader(data)));
   }
-  DeleteOrchestrator(
-    request: MsgDeleteOrchestrator,
-  ): Promise<MsgDeleteOrchestratorResponse> {
+  DeleteOrchestrator(request: MsgDeleteOrchestrator): Promise<MsgDeleteOrchestratorResponse> {
     const data = MsgDeleteOrchestrator.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'DeleteOrchestrator', data);
-    return promise.then((data) =>
-      MsgDeleteOrchestratorResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "DeleteOrchestrator", data);
+    return promise.then(data => MsgDeleteOrchestratorResponse.decode(new _m0.Reader(data)));
   }
-  AddMinerDeposit(
-    request: MsgAddMinerDeposit,
-  ): Promise<MsgAddMinerDepositResponse> {
+  AddMinerDeposit(request: MsgAddMinerDeposit): Promise<MsgAddMinerDepositResponse> {
     const data = MsgAddMinerDeposit.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'AddMinerDeposit', data);
-    return promise.then((data) =>
-      MsgAddMinerDepositResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "AddMinerDeposit", data);
+    return promise.then(data => MsgAddMinerDepositResponse.decode(new _m0.Reader(data)));
   }
   WithdrawMiner(request: MsgWithdrawMiner): Promise<MsgWithdrawMinerResponse> {
     const data = MsgWithdrawMiner.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'WithdrawMiner', data);
-    return promise.then((data) =>
-      MsgWithdrawMinerResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "WithdrawMiner", data);
+    return promise.then(data => MsgWithdrawMinerResponse.decode(new _m0.Reader(data)));
   }
-  AddOrchestratorDeposit(
-    request: MsgAddOrchestratorDeposit,
-  ): Promise<MsgAddOrchestratorDepositResponse> {
+  AddOrchestratorDeposit(request: MsgAddOrchestratorDeposit): Promise<MsgAddOrchestratorDepositResponse> {
     const data = MsgAddOrchestratorDeposit.encode(request).finish();
-    const promise = this.rpc.request(
-      'dht.v1.Msg',
-      'AddOrchestratorDeposit',
-      data,
-    );
-    return promise.then((data) =>
-      MsgAddOrchestratorDepositResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "AddOrchestratorDeposit", data);
+    return promise.then(data => MsgAddOrchestratorDepositResponse.decode(new _m0.Reader(data)));
   }
-  WithdrawOrchestrator(
-    request: MsgWithdrawOrchestrator,
-  ): Promise<MsgWithdrawOrchestratorResponse> {
+  WithdrawOrchestrator(request: MsgWithdrawOrchestrator): Promise<MsgWithdrawOrchestratorResponse> {
     const data = MsgWithdrawOrchestrator.encode(request).finish();
-    const promise = this.rpc.request(
-      'dht.v1.Msg',
-      'WithdrawOrchestrator',
-      data,
-    );
-    return promise.then((data) =>
-      MsgWithdrawOrchestratorResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "WithdrawOrchestrator", data);
+    return promise.then(data => MsgWithdrawOrchestratorResponse.decode(new _m0.Reader(data)));
   }
-  UpdateNodeLabel(
-    request: MsgUpdateNodeLabel,
-  ): Promise<MsgUpdateNodeLabelResponse> {
+  UpdateNodeLabel(request: MsgUpdateNodeLabel): Promise<MsgUpdateNodeLabelResponse> {
     const data = MsgUpdateNodeLabel.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'UpdateNodeLabel', data);
-    return promise.then((data) =>
-      MsgUpdateNodeLabelResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "UpdateNodeLabel", data);
+    return promise.then(data => MsgUpdateNodeLabelResponse.decode(new _m0.Reader(data)));
   }
-  UpdateOrchestratorReputation(
-    request: MsgUpdateOrchestratorReputation,
-  ): Promise<MsgUpdateOrchestratorReputationResponse> {
+  UpdateOrchestratorReputation(request: MsgUpdateOrchestratorReputation): Promise<MsgUpdateOrchestratorReputationResponse> {
     const data = MsgUpdateOrchestratorReputation.encode(request).finish();
-    const promise = this.rpc.request(
-      'dht.v1.Msg',
-      'UpdateOrchestratorReputation',
-      data,
-    );
-    return promise.then((data) =>
-      MsgUpdateOrchestratorReputationResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "UpdateOrchestratorReputation", data);
+    return promise.then(data => MsgUpdateOrchestratorReputationResponse.decode(new _m0.Reader(data)));
   }
-  SetReputationParams(
-    request: MsgSetReputationParams,
-  ): Promise<MsgSetReputationParamsResponse> {
+  SetReputationParams(request: MsgSetReputationParams): Promise<MsgSetReputationParamsResponse> {
     const data = MsgSetReputationParams.encode(request).finish();
-    const promise = this.rpc.request('dht.v1.Msg', 'SetReputationParams', data);
-    return promise.then((data) =>
-      MsgSetReputationParamsResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("dht.v1.Msg", "SetReputationParams", data);
+    return promise.then(data => MsgSetReputationParamsResponse.decode(new _m0.Reader(data)));
+  }
+  ClaimTGEReward(request: MsgClaimTGEReward): Promise<MsgClaimTGERewardResponse> {
+    const data = MsgClaimTGEReward.encode(request).finish();
+    const promise = this.rpc.request("dht.v1.Msg", "ClaimTGEReward", data);
+    return promise.then(data => MsgClaimTGERewardResponse.decode(new _m0.Reader(data)));
+  }
+  SetDistributionConfig(request: MsgSetDistributionConfig): Promise<MsgSetDistributionConfigResponse> {
+    const data = MsgSetDistributionConfig.encode(request).finish();
+    const promise = this.rpc.request("dht.v1.Msg", "SetDistributionConfig", data);
+    return promise.then(data => MsgSetDistributionConfigResponse.decode(new _m0.Reader(data)));
   }
 }

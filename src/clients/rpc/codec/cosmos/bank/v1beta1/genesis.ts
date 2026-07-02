@@ -1,10 +1,10 @@
 /* eslint-disable */
-import { Params, Metadata } from './bank.js';
-import { Coin } from '../../base/v1beta1/coin.js';
-import _m0 from 'protobufjs/minimal';
-import { isSet, DeepPartial, Exact } from '../../../helpers.js';
-import { JsonSafe } from '../../../json-safe.js';
-export const protobufPackage = 'cosmos.bank.v1beta1';
+import { Params, Metadata } from "./bank";
+import { Coin } from "../../base/v1beta1/coin";
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+export const protobufPackage = "cosmos.bank.v1beta1";
 /** GenesisState defines the bank module's genesis state. */
 export interface GenesisState {
   /** params defines all the paramaters of the module. */
@@ -34,15 +34,12 @@ function createBaseGenesisState(): GenesisState {
     params: Params.fromPartial({}),
     balances: [],
     supply: [],
-    denomMetadata: [],
+    denomMetadata: []
   };
 }
 export const GenesisState = {
-  typeUrl: '/cosmos.bank.v1beta1.GenesisState',
-  encode(
-    message: GenesisState,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.GenesisState",
+  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -86,69 +83,52 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const obj = createBaseGenesisState();
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
-    if (Array.isArray(object?.balances))
-      obj.balances = object.balances.map((e: any) => Balance.fromJSON(e));
-    if (Array.isArray(object?.supply))
-      obj.supply = object.supply.map((e: any) => Coin.fromJSON(e));
-    if (Array.isArray(object?.denomMetadata))
-      obj.denomMetadata = object.denomMetadata.map((e: any) =>
-        Metadata.fromJSON(e),
-      );
+    if (Array.isArray(object?.balances)) obj.balances = object.balances.map((e: any) => Balance.fromJSON(e));
+    if (Array.isArray(object?.supply)) obj.supply = object.supply.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.denomMetadata)) obj.denomMetadata = object.denomMetadata.map((e: any) => Metadata.fromJSON(e));
     return obj;
   },
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
-    message.params !== undefined &&
-      (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     if (message.balances) {
-      obj.balances = message.balances.map((e) =>
-        e ? Balance.toJSON(e) : undefined,
-      );
+      obj.balances = message.balances.map(e => e ? Balance.toJSON(e) : undefined);
     } else {
       obj.balances = [];
     }
     if (message.supply) {
-      obj.supply = message.supply.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.supply = message.supply.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.supply = [];
     }
     if (message.denomMetadata) {
-      obj.denomMetadata = message.denomMetadata.map((e) =>
-        e ? Metadata.toJSON(e) : undefined,
-      );
+      obj.denomMetadata = message.denomMetadata.map(e => e ? Metadata.toJSON(e) : undefined);
     } else {
       obj.denomMetadata = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(
-    object: I,
-  ): GenesisState {
+  fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     }
-    message.balances =
-      object.balances?.map((e) => Balance.fromPartial(e)) || [];
-    message.supply = object.supply?.map((e) => Coin.fromPartial(e)) || [];
-    message.denomMetadata =
-      object.denomMetadata?.map((e) => Metadata.fromPartial(e)) || [];
+    message.balances = object.balances?.map(e => Balance.fromPartial(e)) || [];
+    message.supply = object.supply?.map(e => Coin.fromPartial(e)) || [];
+    message.denomMetadata = object.denomMetadata?.map(e => Metadata.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseBalance(): Balance {
   return {
-    address: '',
-    coins: [],
+    address: "",
+    coins: []
   };
 }
 export const Balance = {
-  typeUrl: '/cosmos.bank.v1beta1.Balance',
-  encode(
-    message: Balance,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.address !== '') {
+  typeUrl: "/cosmos.bank.v1beta1.Balance",
+  encode(message: Balance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     for (const v of message.coins) {
@@ -179,15 +159,14 @@ export const Balance = {
   fromJSON(object: any): Balance {
     const obj = createBaseBalance();
     if (isSet(object.address)) obj.address = String(object.address);
-    if (Array.isArray(object?.coins))
-      obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.coins)) obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
   toJSON(message: Balance): JsonSafe<Balance> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
-      obj.coins = message.coins.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.coins = message.coins.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.coins = [];
     }
@@ -195,8 +174,8 @@ export const Balance = {
   },
   fromPartial<I extends Exact<DeepPartial<Balance>, I>>(object: I): Balance {
     const message = createBaseBalance();
-    message.address = object.address ?? '';
-    message.coins = object.coins?.map((e) => Coin.fromPartial(e)) || [];
+    message.address = object.address ?? "";
+    message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
     return message;
-  },
+  }
 };

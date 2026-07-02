@@ -1,11 +1,11 @@
 /* eslint-disable */
-import { BondStatus, bondStatusFromJSON, bondStatusToJSON } from './deposit.js';
-import { Coin } from '../../cosmos/base/v1beta1/coin.js';
-import { Reputation } from './reputation.js';
-import { Long, isSet, DeepPartial, Exact } from '../../helpers.js';
-import _m0 from 'protobufjs/minimal';
-import { JsonSafe } from '../../json-safe.js';
-export const protobufPackage = 'dht.v1';
+import { BondStatus, bondStatusFromJSON, bondStatusToJSON } from "./deposit";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Reputation } from "./reputation";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
+import { JsonSafe } from "../../json-safe";
+export const protobufPackage = "dht.v1";
 /** Availability defines the availability of an Orchestrator. */
 export enum Availability {
   READY = 0,
@@ -16,16 +16,16 @@ export enum Availability {
 export function availabilityFromJSON(object: any): Availability {
   switch (object) {
     case 0:
-    case 'READY':
+    case "READY":
       return Availability.READY;
     case 1:
-    case 'LOADING':
+    case "LOADING":
       return Availability.LOADING;
     case 2:
-    case 'IDLE':
+    case "IDLE":
       return Availability.IDLE;
     case -1:
-    case 'UNRECOGNIZED':
+    case "UNRECOGNIZED":
     default:
       return Availability.UNRECOGNIZED;
   }
@@ -33,14 +33,14 @@ export function availabilityFromJSON(object: any): Availability {
 export function availabilityToJSON(object: Availability): string {
   switch (object) {
     case Availability.READY:
-      return 'READY';
+      return "READY";
     case Availability.LOADING:
-      return 'LOADING';
+      return "LOADING";
     case Availability.IDLE:
-      return 'IDLE';
+      return "IDLE";
     case Availability.UNRECOGNIZED:
     default:
-      return 'UNRECOGNIZED';
+      return "UNRECOGNIZED";
   }
 }
 /** InferenceType defines the inference type of an Orchestrator. */
@@ -52,13 +52,13 @@ export enum InferenceType {
 export function inferenceTypeFromJSON(object: any): InferenceType {
   switch (object) {
     case 0:
-    case 'DISTRIBUTED':
+    case "DISTRIBUTED":
       return InferenceType.DISTRIBUTED;
     case 1:
-    case 'NON_DISTRIBUTED':
+    case "NON_DISTRIBUTED":
       return InferenceType.NON_DISTRIBUTED;
     case -1:
-    case 'UNRECOGNIZED':
+    case "UNRECOGNIZED":
     default:
       return InferenceType.UNRECOGNIZED;
   }
@@ -66,12 +66,12 @@ export function inferenceTypeFromJSON(object: any): InferenceType {
 export function inferenceTypeToJSON(object: InferenceType): string {
   switch (object) {
     case InferenceType.DISTRIBUTED:
-      return 'DISTRIBUTED';
+      return "DISTRIBUTED";
     case InferenceType.NON_DISTRIBUTED:
-      return 'NON_DISTRIBUTED';
+      return "NON_DISTRIBUTED";
     case InferenceType.UNRECOGNIZED:
     default:
-      return 'UNRECOGNIZED';
+      return "UNRECOGNIZED";
   }
 }
 /** Orchestrator defines an orchestrator of a model. */
@@ -87,26 +87,23 @@ export interface Orchestrator {
 }
 function createBaseOrchestrator(): Orchestrator {
   return {
-    nodeId: '',
-    modelName: '',
+    nodeId: "",
+    modelName: "",
     inferenceType: 0,
     status: 0,
     blockCount: [],
     bondStatus: 0,
     deposit: Coin.fromPartial({}),
-    reputations: [],
+    reputations: []
   };
 }
 export const Orchestrator = {
-  typeUrl: '/dht.v1.Orchestrator',
-  encode(
-    message: Orchestrator,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.nodeId !== '') {
+  typeUrl: "/dht.v1.Orchestrator",
+  encode(message: Orchestrator, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
     }
-    if (message.modelName !== '') {
+    if (message.modelName !== "") {
       writer.uint32(18).string(message.modelName);
     }
     if (message.inferenceType !== 0) {
@@ -180,65 +177,46 @@ export const Orchestrator = {
     const obj = createBaseOrchestrator();
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
     if (isSet(object.modelName)) obj.modelName = String(object.modelName);
-    if (isSet(object.inferenceType))
-      obj.inferenceType = inferenceTypeFromJSON(object.inferenceType);
+    if (isSet(object.inferenceType)) obj.inferenceType = inferenceTypeFromJSON(object.inferenceType);
     if (isSet(object.status)) obj.status = availabilityFromJSON(object.status);
-    if (Array.isArray(object?.blockCount))
-      obj.blockCount = object.blockCount.map((e: any) => Long.fromValue(e));
-    if (isSet(object.bondStatus))
-      obj.bondStatus = bondStatusFromJSON(object.bondStatus);
+    if (Array.isArray(object?.blockCount)) obj.blockCount = object.blockCount.map((e: any) => Long.fromValue(e));
+    if (isSet(object.bondStatus)) obj.bondStatus = bondStatusFromJSON(object.bondStatus);
     if (isSet(object.deposit)) obj.deposit = Coin.fromJSON(object.deposit);
-    if (Array.isArray(object?.reputations))
-      obj.reputations = object.reputations.map((e: any) =>
-        Reputation.fromJSON(e),
-      );
+    if (Array.isArray(object?.reputations)) obj.reputations = object.reputations.map((e: any) => Reputation.fromJSON(e));
     return obj;
   },
   toJSON(message: Orchestrator): JsonSafe<Orchestrator> {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.modelName !== undefined && (obj.modelName = message.modelName);
-    message.inferenceType !== undefined &&
-      (obj.inferenceType = inferenceTypeToJSON(message.inferenceType));
-    message.status !== undefined &&
-      (obj.status = availabilityToJSON(message.status));
+    message.inferenceType !== undefined && (obj.inferenceType = inferenceTypeToJSON(message.inferenceType));
+    message.status !== undefined && (obj.status = availabilityToJSON(message.status));
     if (message.blockCount) {
-      obj.blockCount = message.blockCount.map((e) =>
-        (e || Long.UZERO).toString(),
-      );
+      obj.blockCount = message.blockCount.map(e => (e || Long.UZERO).toString());
     } else {
       obj.blockCount = [];
     }
-    message.bondStatus !== undefined &&
-      (obj.bondStatus = bondStatusToJSON(message.bondStatus));
-    message.deposit !== undefined &&
-      (obj.deposit = message.deposit
-        ? Coin.toJSON(message.deposit)
-        : undefined);
+    message.bondStatus !== undefined && (obj.bondStatus = bondStatusToJSON(message.bondStatus));
+    message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
     if (message.reputations) {
-      obj.reputations = message.reputations.map((e) =>
-        e ? Reputation.toJSON(e) : undefined,
-      );
+      obj.reputations = message.reputations.map(e => e ? Reputation.toJSON(e) : undefined);
     } else {
       obj.reputations = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<Orchestrator>, I>>(
-    object: I,
-  ): Orchestrator {
+  fromPartial<I extends Exact<DeepPartial<Orchestrator>, I>>(object: I): Orchestrator {
     const message = createBaseOrchestrator();
-    message.nodeId = object.nodeId ?? '';
-    message.modelName = object.modelName ?? '';
+    message.nodeId = object.nodeId ?? "";
+    message.modelName = object.modelName ?? "";
     message.inferenceType = object.inferenceType ?? 0;
     message.status = object.status ?? 0;
-    message.blockCount = object.blockCount?.map((e) => Long.fromValue(e)) || [];
+    message.blockCount = object.blockCount?.map(e => Long.fromValue(e)) || [];
     message.bondStatus = object.bondStatus ?? 0;
     if (object.deposit !== undefined && object.deposit !== null) {
       message.deposit = Coin.fromPartial(object.deposit);
     }
-    message.reputations =
-      object.reputations?.map((e) => Reputation.fromPartial(e)) || [];
+    message.reputations = object.reputations?.map(e => Reputation.fromPartial(e)) || [];
     return message;
-  },
+  }
 };

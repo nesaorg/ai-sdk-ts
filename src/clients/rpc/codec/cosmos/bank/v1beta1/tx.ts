@@ -1,10 +1,10 @@
 /* eslint-disable */
-import { Coin } from '../../base/v1beta1/coin.js';
-import { Input, Output } from './bank.js';
-import _m0 from 'protobufjs/minimal';
-import { isSet, DeepPartial, Exact, Rpc } from '../../../helpers.js';
-import { JsonSafe } from '../../../json-safe.js';
-export const protobufPackage = 'cosmos.bank.v1beta1';
+import { Coin } from "../../base/v1beta1/coin";
+import { Input, Output } from "./bank";
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+export const protobufPackage = "cosmos.bank.v1beta1";
 /** MsgSend represents a message to send coins from one account to another. */
 export interface MsgSend {
   fromAddress: string;
@@ -22,21 +22,18 @@ export interface MsgMultiSend {
 export interface MsgMultiSendResponse {}
 function createBaseMsgSend(): MsgSend {
   return {
-    fromAddress: '',
-    toAddress: '',
-    amount: [],
+    fromAddress: "",
+    toAddress: "",
+    amount: []
   };
 }
 export const MsgSend = {
-  typeUrl: '/cosmos.bank.v1beta1.MsgSend',
-  encode(
-    message: MsgSend,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.fromAddress !== '') {
+  typeUrl: "/cosmos.bank.v1beta1.MsgSend",
+  encode(message: MsgSend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.fromAddress !== "") {
       writer.uint32(10).string(message.fromAddress);
     }
-    if (message.toAddress !== '') {
+    if (message.toAddress !== "") {
       writer.uint32(18).string(message.toAddress);
     }
     for (const v of message.amount) {
@@ -71,17 +68,15 @@ export const MsgSend = {
     const obj = createBaseMsgSend();
     if (isSet(object.fromAddress)) obj.fromAddress = String(object.fromAddress);
     if (isSet(object.toAddress)) obj.toAddress = String(object.toAddress);
-    if (Array.isArray(object?.amount))
-      obj.amount = object.amount.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.amount)) obj.amount = object.amount.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
   toJSON(message: MsgSend): JsonSafe<MsgSend> {
     const obj: any = {};
-    message.fromAddress !== undefined &&
-      (obj.fromAddress = message.fromAddress);
+    message.fromAddress !== undefined && (obj.fromAddress = message.fromAddress);
     message.toAddress !== undefined && (obj.toAddress = message.toAddress);
     if (message.amount) {
-      obj.amount = message.amount.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.amount = message.amount.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.amount = [];
     }
@@ -89,21 +84,18 @@ export const MsgSend = {
   },
   fromPartial<I extends Exact<DeepPartial<MsgSend>, I>>(object: I): MsgSend {
     const message = createBaseMsgSend();
-    message.fromAddress = object.fromAddress ?? '';
-    message.toAddress = object.toAddress ?? '';
-    message.amount = object.amount?.map((e) => Coin.fromPartial(e)) || [];
+    message.fromAddress = object.fromAddress ?? "";
+    message.toAddress = object.toAddress ?? "";
+    message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseMsgSendResponse(): MsgSendResponse {
   return {};
 }
 export const MsgSendResponse = {
-  typeUrl: '/cosmos.bank.v1beta1.MsgSendResponse',
-  encode(
-    _: MsgSendResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.MsgSendResponse",
+  encode(_: MsgSendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendResponse {
@@ -128,25 +120,20 @@ export const MsgSendResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgSendResponse>, I>>(
-    _: I,
-  ): MsgSendResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgSendResponse>, I>>(_: I): MsgSendResponse {
     const message = createBaseMsgSendResponse();
     return message;
-  },
+  }
 };
 function createBaseMsgMultiSend(): MsgMultiSend {
   return {
     inputs: [],
-    outputs: [],
+    outputs: []
   };
 }
 export const MsgMultiSend = {
-  typeUrl: '/cosmos.bank.v1beta1.MsgMultiSend',
-  encode(
-    message: MsgMultiSend,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.MsgMultiSend",
+  encode(message: MsgMultiSend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.inputs) {
       Input.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -177,52 +164,40 @@ export const MsgMultiSend = {
   },
   fromJSON(object: any): MsgMultiSend {
     const obj = createBaseMsgMultiSend();
-    if (Array.isArray(object?.inputs))
-      obj.inputs = object.inputs.map((e: any) => Input.fromJSON(e));
-    if (Array.isArray(object?.outputs))
-      obj.outputs = object.outputs.map((e: any) => Output.fromJSON(e));
+    if (Array.isArray(object?.inputs)) obj.inputs = object.inputs.map((e: any) => Input.fromJSON(e));
+    if (Array.isArray(object?.outputs)) obj.outputs = object.outputs.map((e: any) => Output.fromJSON(e));
     return obj;
   },
   toJSON(message: MsgMultiSend): JsonSafe<MsgMultiSend> {
     const obj: any = {};
     if (message.inputs) {
-      obj.inputs = message.inputs.map((e) => (e ? Input.toJSON(e) : undefined));
+      obj.inputs = message.inputs.map(e => e ? Input.toJSON(e) : undefined);
     } else {
       obj.inputs = [];
     }
     if (message.outputs) {
-      obj.outputs = message.outputs.map((e) =>
-        e ? Output.toJSON(e) : undefined,
-      );
+      obj.outputs = message.outputs.map(e => e ? Output.toJSON(e) : undefined);
     } else {
       obj.outputs = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgMultiSend>, I>>(
-    object: I,
-  ): MsgMultiSend {
+  fromPartial<I extends Exact<DeepPartial<MsgMultiSend>, I>>(object: I): MsgMultiSend {
     const message = createBaseMsgMultiSend();
-    message.inputs = object.inputs?.map((e) => Input.fromPartial(e)) || [];
-    message.outputs = object.outputs?.map((e) => Output.fromPartial(e)) || [];
+    message.inputs = object.inputs?.map(e => Input.fromPartial(e)) || [];
+    message.outputs = object.outputs?.map(e => Output.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseMsgMultiSendResponse(): MsgMultiSendResponse {
   return {};
 }
 export const MsgMultiSendResponse = {
-  typeUrl: '/cosmos.bank.v1beta1.MsgMultiSendResponse',
-  encode(
-    _: MsgMultiSendResponse,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.MsgMultiSendResponse",
+  encode(_: MsgMultiSendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number,
-  ): MsgMultiSendResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMultiSendResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgMultiSendResponse();
@@ -244,12 +219,10 @@ export const MsgMultiSendResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MsgMultiSendResponse>, I>>(
-    _: I,
-  ): MsgMultiSendResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgMultiSendResponse>, I>>(_: I): MsgMultiSendResponse {
     const message = createBaseMsgMultiSendResponse();
     return message;
-  },
+  }
 };
 /** Msg defines the bank Msg service. */
 export interface Msg {
@@ -267,18 +240,12 @@ export class MsgClientImpl implements Msg {
   }
   Send(request: MsgSend): Promise<MsgSendResponse> {
     const data = MsgSend.encode(request).finish();
-    const promise = this.rpc.request('cosmos.bank.v1beta1.Msg', 'Send', data);
-    return promise.then((data) => MsgSendResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request("cosmos.bank.v1beta1.Msg", "Send", data);
+    return promise.then(data => MsgSendResponse.decode(new _m0.Reader(data)));
   }
   MultiSend(request: MsgMultiSend): Promise<MsgMultiSendResponse> {
     const data = MsgMultiSend.encode(request).finish();
-    const promise = this.rpc.request(
-      'cosmos.bank.v1beta1.Msg',
-      'MultiSend',
-      data,
-    );
-    return promise.then((data) =>
-      MsgMultiSendResponse.decode(new _m0.Reader(data)),
-    );
+    const promise = this.rpc.request("cosmos.bank.v1beta1.Msg", "MultiSend", data);
+    return promise.then(data => MsgMultiSendResponse.decode(new _m0.Reader(data)));
   }
 }

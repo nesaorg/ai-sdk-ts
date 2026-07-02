@@ -1,8 +1,8 @@
 /* eslint-disable */
-import _m0 from 'protobufjs/minimal';
-import { isSet, DeepPartial, Exact } from '../../../helpers.js';
-import { JsonSafe } from '../../../json-safe.js';
-export const protobufPackage = 'cosmos.app.v1alpha1';
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+export const protobufPackage = "cosmos.app.v1alpha1";
 /** ModuleDescriptor describes an app module. */
 export interface ModuleDescriptor {
   /**
@@ -40,30 +40,30 @@ export interface PackageReference {
    * The revision of a package can be thought of as the minor version of a
    * package which has additional backwards compatible definitions that weren't
    * present in a previous version.
-   *
+   * 
    * A package should indicate its revision with a source code comment
    * above the package declaration in one of its files containing the
    * text "Revision N" where N is an integer revision. All packages start
    * at revision 0 the first time they are released in a module.
-   *
+   * 
    * When a new version of a module is released and items are added to existing
    * .proto files, these definitions should contain comments of the form
    * "Since: Revision N" where N is an integer revision.
-   *
+   * 
    * When the module runtime starts up, it will check the pinned proto
    * image and panic if there are runtime protobuf definitions that are not
    * in the pinned descriptor which do not have
    * a "Since Revision N" comment or have a "Since Revision N" comment where
    * N is <= to the revision specified here. This indicates that the protobuf
    * files have been updated, but the pinned file descriptor hasn't.
-   *
+   * 
    * If there are items in the pinned file descriptor with a revision
    * greater than the value indicated here, this will also cause a panic
    * as it may mean that the pinned descriptor for a legacy module has been
    * improperly updated or that there is some other versioning discrepancy.
    * Runtime protobuf definitions will also be checked for compatibility
    * with pinned file descriptors to make sure there are no incompatible changes.
-   *
+   * 
    * This behavior ensures that:
    * * pinned proto images are up-to-date
    * * protobuf files are carefully annotated with revision comments which
@@ -85,18 +85,15 @@ export interface MigrateFromInfo {
 }
 function createBaseModuleDescriptor(): ModuleDescriptor {
   return {
-    goImport: '',
+    goImport: "",
     usePackage: [],
-    canMigrateFrom: [],
+    canMigrateFrom: []
   };
 }
 export const ModuleDescriptor = {
-  typeUrl: '/cosmos.app.v1alpha1.ModuleDescriptor',
-  encode(
-    message: ModuleDescriptor,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.goImport !== '') {
+  typeUrl: "/cosmos.app.v1alpha1.ModuleDescriptor",
+  encode(message: ModuleDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.goImport !== "") {
       writer.uint32(10).string(message.goImport);
     }
     for (const v of message.usePackage) {
@@ -118,14 +115,10 @@ export const ModuleDescriptor = {
           message.goImport = reader.string();
           break;
         case 2:
-          message.usePackage.push(
-            PackageReference.decode(reader, reader.uint32()),
-          );
+          message.usePackage.push(PackageReference.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.canMigrateFrom.push(
-            MigrateFromInfo.decode(reader, reader.uint32()),
-          );
+          message.canMigrateFrom.push(MigrateFromInfo.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -137,60 +130,43 @@ export const ModuleDescriptor = {
   fromJSON(object: any): ModuleDescriptor {
     const obj = createBaseModuleDescriptor();
     if (isSet(object.goImport)) obj.goImport = String(object.goImport);
-    if (Array.isArray(object?.usePackage))
-      obj.usePackage = object.usePackage.map((e: any) =>
-        PackageReference.fromJSON(e),
-      );
-    if (Array.isArray(object?.canMigrateFrom))
-      obj.canMigrateFrom = object.canMigrateFrom.map((e: any) =>
-        MigrateFromInfo.fromJSON(e),
-      );
+    if (Array.isArray(object?.usePackage)) obj.usePackage = object.usePackage.map((e: any) => PackageReference.fromJSON(e));
+    if (Array.isArray(object?.canMigrateFrom)) obj.canMigrateFrom = object.canMigrateFrom.map((e: any) => MigrateFromInfo.fromJSON(e));
     return obj;
   },
   toJSON(message: ModuleDescriptor): JsonSafe<ModuleDescriptor> {
     const obj: any = {};
     message.goImport !== undefined && (obj.goImport = message.goImport);
     if (message.usePackage) {
-      obj.usePackage = message.usePackage.map((e) =>
-        e ? PackageReference.toJSON(e) : undefined,
-      );
+      obj.usePackage = message.usePackage.map(e => e ? PackageReference.toJSON(e) : undefined);
     } else {
       obj.usePackage = [];
     }
     if (message.canMigrateFrom) {
-      obj.canMigrateFrom = message.canMigrateFrom.map((e) =>
-        e ? MigrateFromInfo.toJSON(e) : undefined,
-      );
+      obj.canMigrateFrom = message.canMigrateFrom.map(e => e ? MigrateFromInfo.toJSON(e) : undefined);
     } else {
       obj.canMigrateFrom = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<ModuleDescriptor>, I>>(
-    object: I,
-  ): ModuleDescriptor {
+  fromPartial<I extends Exact<DeepPartial<ModuleDescriptor>, I>>(object: I): ModuleDescriptor {
     const message = createBaseModuleDescriptor();
-    message.goImport = object.goImport ?? '';
-    message.usePackage =
-      object.usePackage?.map((e) => PackageReference.fromPartial(e)) || [];
-    message.canMigrateFrom =
-      object.canMigrateFrom?.map((e) => MigrateFromInfo.fromPartial(e)) || [];
+    message.goImport = object.goImport ?? "";
+    message.usePackage = object.usePackage?.map(e => PackageReference.fromPartial(e)) || [];
+    message.canMigrateFrom = object.canMigrateFrom?.map(e => MigrateFromInfo.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBasePackageReference(): PackageReference {
   return {
-    name: '',
-    revision: 0,
+    name: "",
+    revision: 0
   };
 }
 export const PackageReference = {
-  typeUrl: '/cosmos.app.v1alpha1.PackageReference',
-  encode(
-    message: PackageReference,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.name !== '') {
+  typeUrl: "/cosmos.app.v1alpha1.PackageReference",
+  encode(message: PackageReference, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     if (message.revision !== 0) {
@@ -227,31 +203,25 @@ export const PackageReference = {
   toJSON(message: PackageReference): JsonSafe<PackageReference> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.revision !== undefined &&
-      (obj.revision = Math.round(message.revision));
+    message.revision !== undefined && (obj.revision = Math.round(message.revision));
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<PackageReference>, I>>(
-    object: I,
-  ): PackageReference {
+  fromPartial<I extends Exact<DeepPartial<PackageReference>, I>>(object: I): PackageReference {
     const message = createBasePackageReference();
-    message.name = object.name ?? '';
+    message.name = object.name ?? "";
     message.revision = object.revision ?? 0;
     return message;
-  },
+  }
 };
 function createBaseMigrateFromInfo(): MigrateFromInfo {
   return {
-    module: '',
+    module: ""
   };
 }
 export const MigrateFromInfo = {
-  typeUrl: '/cosmos.app.v1alpha1.MigrateFromInfo',
-  encode(
-    message: MigrateFromInfo,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.module !== '') {
+  typeUrl: "/cosmos.app.v1alpha1.MigrateFromInfo",
+  encode(message: MigrateFromInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.module !== "") {
       writer.uint32(10).string(message.module);
     }
     return writer;
@@ -283,11 +253,9 @@ export const MigrateFromInfo = {
     message.module !== undefined && (obj.module = message.module);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MigrateFromInfo>, I>>(
-    object: I,
-  ): MigrateFromInfo {
+  fromPartial<I extends Exact<DeepPartial<MigrateFromInfo>, I>>(object: I): MigrateFromInfo {
     const message = createBaseMigrateFromInfo();
-    message.module = object.module ?? '';
+    message.module = object.module ?? "";
     return message;
-  },
+  }
 };

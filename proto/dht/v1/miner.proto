@@ -12,12 +12,10 @@ option go_package = "github.com/nesaorg/nesachain/x/dht/types";
 // Miner defines a miner of a model.
 message Miner {
   string node_id = 1;
-  
-  dht.v1.BondStatus bond_status = 9;
-  cosmos.base.v1beta1.Coin deposit = 10 [ (gogoproto.nullable) = false ];
-  MinerReputation reputation = 11 [ (gogoproto.nullable) = false ];
 
-  reserved 2,3,4,5,6,7,8;
+  dht.v1.BondStatus bond_status = 2;
+  cosmos.base.v1beta1.Coin deposit = 3 [ (gogoproto.nullable) = false ];
+  MinerReputation reputation = 4 [ (gogoproto.nullable) = false ];
 }
 
 // MinerReputation defines the reputation state of a miner
@@ -41,8 +39,6 @@ message MinerReputation {
     (gogoproto.nullable) = false
   ];
   // Last active at
-  google.protobuf.Timestamp last_active_at = 5 [
-    (gogoproto.nullable) = false,
-    (gogoproto.stdtime) = true
-  ];
+  google.protobuf.Timestamp last_active_at = 5
+      [ (gogoproto.nullable) = false, (gogoproto.stdtime) = true ];
 }

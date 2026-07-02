@@ -1,23 +1,20 @@
 /* eslint-disable */
-import _m0 from 'protobufjs/minimal';
-import { isSet, DeepPartial, Exact } from '../../../helpers.js';
-import { JsonSafe } from '../../../json-safe.js';
-export const protobufPackage = 'nesaorg.nesachain.agent.module.v1';
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+export const protobufPackage = "nesaorg.nesachain.agent.module.v1";
 export interface Module {
   authority: string;
 }
 function createBaseModule(): Module {
   return {
-    authority: '',
+    authority: ""
   };
 }
 export const Module = {
-  typeUrl: '/nesaorg.nesachain.agent.module.v1.Module',
-  encode(
-    message: Module,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.authority !== '') {
+  typeUrl: "/nesaorg.nesachain.agent.module.v1.Module",
+  encode(message: Module, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
     return writer;
@@ -51,7 +48,7 @@ export const Module = {
   },
   fromPartial<I extends Exact<DeepPartial<Module>, I>>(object: I): Module {
     const message = createBaseModule();
-    message.authority = object.authority ?? '';
+    message.authority = object.authority ?? "";
     return message;
-  },
+  }
 };

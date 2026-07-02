@@ -12,6 +12,8 @@ import "dht/v1/miner.proto";
 import "dht/v1/model.proto";
 import "dht/v1/orchestrator.proto";
 import "dht/v1/reputation.proto";
+import "dht/v1/tge.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/nesaorg/nesachain/x/dht/types";
 
@@ -46,8 +48,7 @@ service Query {
   // Queries a list of GetOrchestrator items.
   rpc GetOrchestrator(QueryGetOrchestratorRequest)
       returns (QueryGetOrchestratorResponse) {
-    option (google.api.http).get =
-        "/nesachain/dht/get_orchestrator/{node_id}";
+    option (google.api.http).get = "/nesachain/dht/get_orchestrator/{node_id}";
   }
 
   // GetAllOrchestrator queries a list of GetAllOrchestrator items.
@@ -59,7 +60,8 @@ service Query {
   // GetOrchestratorsByParams queries a list of GetOrchestratorsByParams items.
   rpc GetOrchestratorsByParams(QueryGetOrchestratorsByParamsRequest)
       returns (QueryGetOrchestratorsByParamsResponse) {
-    option (google.api.http).get = "/nesachain/dht/get_orchestrators_by_params/{inference_type}";
+    option (google.api.http).get =
+        "/nesachain/dht/get_orchestrators_by_params/{inference_type}";
   }
 
   // ReputationParams queries the reputation parameters.
@@ -69,9 +71,19 @@ service Query {
   }
 
   // ModelConfig queries the model configuration.
-  rpc ModelConfig(QueryModelConfigRequest)
-      returns (QueryModelConfigResponse) {
+  rpc ModelConfig(QueryModelConfigRequest) returns (QueryModelConfigResponse) {
     option (google.api.http).get = "/nesachain/dht/model_config/{model_name}";
+  }
+
+  // DistributionConfig queries the distribution configuration.
+  rpc DistributionConfig(QueryDistributionConfigRequest)
+      returns (QueryDistributionConfigResponse) {
+    option (google.api.http).get = "/nesachain/dht/distribution_config";
+  }
+
+  // TGEReward queries the TGE reward.
+  rpc TGEReward(QueryTGERewardRequest) returns (QueryTGERewardResponse) {
+    option (google.api.http).get = "/nesachain/dht/tge_reward";
   }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -85,14 +97,10 @@ message QueryParamsResponse {
 }
 
 // QueryGetModelRequest is request type for the Query/Model RPC method.
-message QueryGetModelRequest {
-  string model_name = 1;
-}
+message QueryGetModelRequest { string model_name = 1; }
 
 // QueryGetModelResponse is response type for the Query/Model RPC method.
-message QueryGetModelResponse {
-  DisplayModel model = 1;
-}
+message QueryGetModelResponse { DisplayModel model = 1; }
 
 // QueryModelsRequest is request type for the Query/Models RPC method.
 message QueryModelsRequest {
@@ -120,16 +128,19 @@ message QueryGetMinerResponse {
   Node node = 2;
 }
 
-// QueryGetOrchestratorRequest is request type for the Query/GetOrchestrator RPC method.
+// QueryGetOrchestratorRequest is request type for the Query/GetOrchestrator RPC
+// method.
 message QueryGetOrchestratorRequest { string node_id = 1; }
 
-// QueryGetOrchestratorResponse is response type for the Query/GetOrchestrator RPC method.
+// QueryGetOrchestratorResponse is response type for the Query/GetOrchestrator
+// RPC method.
 message QueryGetOrchestratorResponse {
   Orchestrator orchestrator = 1;
   Node node = 2;
 }
 
-// QueryGetOrchestratorsByParamsRequest is request type for the Query/GetOrchestratorsByParams RPC method.
+// QueryGetOrchestratorsByParamsRequest is request type for the
+// Query/GetOrchestratorsByParams RPC method.
 message QueryGetOrchestratorsByParamsRequest {
   InferenceType inference_type = 1;
   Availability availability = 2;
@@ -137,38 +148,42 @@ message QueryGetOrchestratorsByParamsRequest {
   bytes key = 4;
 }
 
-// QueryGetOrchestratorsByParamsResponse is response type for the Query/GetOrchestratorsByParams RPC method.
+// QueryGetOrchestratorsByParamsResponse is response type for the
+// Query/GetOrchestratorsByParams RPC method.
 message QueryGetOrchestratorsByParamsResponse {
   repeated Orchestrator orchestrators = 1;
   bytes next_key = 2;
 }
 
-// QueryGetAllOrchestratorRequest is request type for the Query/GetAllOrchestrator RPC method.
+// QueryGetAllOrchestratorRequest is request type for the
+// Query/GetAllOrchestrator RPC method.
 message QueryGetAllOrchestratorRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 };
 
-// QueryGetAllOrchestratorResponse is response type for the Query/GetAllOrchestrator RPC method.
+// QueryGetAllOrchestratorResponse is response type for the
+// Query/GetAllOrchestrator RPC method.
 message QueryGetAllOrchestratorResponse {
   repeated Orchestrator orchestrators = 1;
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-// QueryReputationParamsRequest is request type for the Query/ReputationParams RPC method.
+// QueryReputationParamsRequest is request type for the Query/ReputationParams
+// RPC method.
 message QueryReputationParamsRequest {}
 
-// QueryReputationParamsResponse is response type for the Query/ReputationParams RPC method.
+// QueryReputationParamsResponse is response type for the Query/ReputationParams
+// RPC method.
 message QueryReputationParamsResponse {
   ReputationParams params = 1
       [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
 }
 
 // QueryModelConfigRequest is request type for the Query/ModelConfig RPC method.
-message QueryModelConfigRequest {
-  string model_name = 1;
-}
+message QueryModelConfigRequest { string model_name = 1; }
 
-// QueryModelConfigResponse is response type for the Query/ModelConfig RPC method.
+// QueryModelConfigResponse is response type for the Query/ModelConfig RPC
+// method.
 message QueryModelConfigResponse {
   ModelConfig config = 1
       [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
@@ -176,14 +191,33 @@ message QueryModelConfigResponse {
 
 // DisplayModel defines a model
 message DisplayModel {
-  option (gogoproto.equal)           = false;
-  option (gogoproto.stringer)        = false;
+  option (gogoproto.equal) = false;
+  option (gogoproto.stringer) = false;
   option (gogoproto.goproto_getters) = false;
 
   string creator = 1;
   string model_name = 2;
-  TokenPrice token_price = 4 [(gogoproto.nullable) = false];
-  repeated string s_window = 5  [(gogoproto.nullable) = false];
+  TokenPrice token_price = 4 [ (gogoproto.nullable) = false ];
+  repeated string s_window = 5 [ (gogoproto.nullable) = false ];
 
   reserved 3;
+}
+
+// QueryDistributionConfigRequest is request type for the
+// Query/DistributionConfig RPC method.
+message QueryDistributionConfigRequest {}
+
+// QueryDistributionConfigResponse is response type for the
+// Query/DistributionConfig RPC method.
+message QueryDistributionConfigResponse {
+  DistributionConfig config = 1
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
+}
+
+// QueryTGERewardRequest is request type for the Query/TGEReward RPC method.
+message QueryTGERewardRequest { string address = 1; }
+
+// QueryTGERewardResponse is response type for the Query/TGEReward RPC method.
+message QueryTGERewardResponse {
+  cosmos.base.v1beta1.Coin reward = 1 [ (gogoproto.nullable) = false ];
 }

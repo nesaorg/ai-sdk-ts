@@ -212,13 +212,11 @@ message ReputationParams {
   string nesa_pdp_account = 34
       [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   // Min penalty amount
-  cosmos.base.v1beta1.Coin min_penalty_amount = 35 [
-    (gogoproto.nullable) = false
-  ];
+  cosmos.base.v1beta1.Coin min_penalty_amount = 35
+      [ (gogoproto.nullable) = false ];
   // Base penalty amount
-  cosmos.base.v1beta1.Coin base_penalty_amount = 36 [
-    (gogoproto.nullable) = false
-  ];
+  cosmos.base.v1beta1.Coin base_penalty_amount = 36
+      [ (gogoproto.nullable) = false ];
 
   uint64 catch_up_power = 37;
   string catch_up_stop_at = 38 [

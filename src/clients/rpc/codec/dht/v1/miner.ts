@@ -1,17 +1,11 @@
 /* eslint-disable */
-import { BondStatus, bondStatusFromJSON, bondStatusToJSON } from './deposit.js';
-import { Coin } from '../../cosmos/base/v1beta1/coin.js';
-import { Timestamp } from '../../google/protobuf/timestamp.js';
-import _m0 from 'protobufjs/minimal';
-import {
-  isSet,
-  DeepPartial,
-  Exact,
-  fromJsonTimestamp,
-  fromTimestamp,
-} from '../../helpers.js';
-import { JsonSafe } from '../../json-safe.js';
-export const protobufPackage = 'dht.v1';
+import { BondStatus, bondStatusFromJSON, bondStatusToJSON } from "./deposit";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Timestamp } from "../../google/protobuf/timestamp";
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
+export const protobufPackage = "dht.v1";
 /** Miner defines a miner of a model. */
 export interface Miner {
   nodeId: string;
@@ -34,29 +28,26 @@ export interface MinerReputation {
 }
 function createBaseMiner(): Miner {
   return {
-    nodeId: '',
+    nodeId: "",
     bondStatus: 0,
     deposit: Coin.fromPartial({}),
-    reputation: MinerReputation.fromPartial({}),
+    reputation: MinerReputation.fromPartial({})
   };
 }
 export const Miner = {
-  typeUrl: '/dht.v1.Miner',
+  typeUrl: "/dht.v1.Miner",
   encode(message: Miner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.nodeId !== '') {
+    if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
     }
     if (message.bondStatus !== 0) {
-      writer.uint32(72).int32(message.bondStatus);
+      writer.uint32(16).int32(message.bondStatus);
     }
     if (message.deposit !== undefined) {
-      Coin.encode(message.deposit, writer.uint32(82).fork()).ldelim();
+      Coin.encode(message.deposit, writer.uint32(26).fork()).ldelim();
     }
     if (message.reputation !== undefined) {
-      MinerReputation.encode(
-        message.reputation,
-        writer.uint32(90).fork(),
-      ).ldelim();
+      MinerReputation.encode(message.reputation, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -70,13 +61,13 @@ export const Miner = {
         case 1:
           message.nodeId = reader.string();
           break;
-        case 9:
+        case 2:
           message.bondStatus = reader.int32() as any;
           break;
-        case 10:
+        case 3:
           message.deposit = Coin.decode(reader, reader.uint32());
           break;
-        case 11:
+        case 4:
           message.reputation = MinerReputation.decode(reader, reader.uint32());
           break;
         default:
@@ -89,31 +80,22 @@ export const Miner = {
   fromJSON(object: any): Miner {
     const obj = createBaseMiner();
     if (isSet(object.nodeId)) obj.nodeId = String(object.nodeId);
-    if (isSet(object.bondStatus))
-      obj.bondStatus = bondStatusFromJSON(object.bondStatus);
+    if (isSet(object.bondStatus)) obj.bondStatus = bondStatusFromJSON(object.bondStatus);
     if (isSet(object.deposit)) obj.deposit = Coin.fromJSON(object.deposit);
-    if (isSet(object.reputation))
-      obj.reputation = MinerReputation.fromJSON(object.reputation);
+    if (isSet(object.reputation)) obj.reputation = MinerReputation.fromJSON(object.reputation);
     return obj;
   },
   toJSON(message: Miner): JsonSafe<Miner> {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.bondStatus !== undefined &&
-      (obj.bondStatus = bondStatusToJSON(message.bondStatus));
-    message.deposit !== undefined &&
-      (obj.deposit = message.deposit
-        ? Coin.toJSON(message.deposit)
-        : undefined);
-    message.reputation !== undefined &&
-      (obj.reputation = message.reputation
-        ? MinerReputation.toJSON(message.reputation)
-        : undefined);
+    message.bondStatus !== undefined && (obj.bondStatus = bondStatusToJSON(message.bondStatus));
+    message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
+    message.reputation !== undefined && (obj.reputation = message.reputation ? MinerReputation.toJSON(message.reputation) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Miner>, I>>(object: I): Miner {
     const message = createBaseMiner();
-    message.nodeId = object.nodeId ?? '';
+    message.nodeId = object.nodeId ?? "";
     message.bondStatus = object.bondStatus ?? 0;
     if (object.deposit !== undefined && object.deposit !== null) {
       message.deposit = Coin.fromPartial(object.deposit);
@@ -122,24 +104,21 @@ export const Miner = {
       message.reputation = MinerReputation.fromPartial(object.reputation);
     }
     return message;
-  },
+  }
 };
 function createBaseMinerReputation(): MinerReputation {
   return {
-    reputationValue: '',
+    reputationValue: "",
     cumulativeReward: [],
     cumulativePenalty: [],
-    sRolling: '',
-    lastActiveAt: Timestamp.fromPartial({}),
+    sRolling: "",
+    lastActiveAt: Timestamp.fromPartial({})
   };
 }
 export const MinerReputation = {
-  typeUrl: '/dht.v1.MinerReputation',
-  encode(
-    message: MinerReputation,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.reputationValue !== '') {
+  typeUrl: "/dht.v1.MinerReputation",
+  encode(message: MinerReputation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.reputationValue !== "") {
       writer.uint32(10).string(message.reputationValue);
     }
     for (const v of message.cumulativeReward) {
@@ -148,7 +127,7 @@ export const MinerReputation = {
     for (const v of message.cumulativePenalty) {
       Coin.encode(v!, writer.uint32(26).fork()).ldelim();
     }
-    if (message.sRolling !== '') {
+    if (message.sRolling !== "") {
       writer.uint32(34).string(message.sRolling);
     }
     if (message.lastActiveAt !== undefined) {
@@ -187,57 +166,39 @@ export const MinerReputation = {
   },
   fromJSON(object: any): MinerReputation {
     const obj = createBaseMinerReputation();
-    if (isSet(object.reputationValue))
-      obj.reputationValue = String(object.reputationValue);
-    if (Array.isArray(object?.cumulativeReward))
-      obj.cumulativeReward = object.cumulativeReward.map((e: any) =>
-        Coin.fromJSON(e),
-      );
-    if (Array.isArray(object?.cumulativePenalty))
-      obj.cumulativePenalty = object.cumulativePenalty.map((e: any) =>
-        Coin.fromJSON(e),
-      );
+    if (isSet(object.reputationValue)) obj.reputationValue = String(object.reputationValue);
+    if (Array.isArray(object?.cumulativeReward)) obj.cumulativeReward = object.cumulativeReward.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.cumulativePenalty)) obj.cumulativePenalty = object.cumulativePenalty.map((e: any) => Coin.fromJSON(e));
     if (isSet(object.sRolling)) obj.sRolling = String(object.sRolling);
-    if (isSet(object.lastActiveAt))
-      obj.lastActiveAt = fromJsonTimestamp(object.lastActiveAt);
+    if (isSet(object.lastActiveAt)) obj.lastActiveAt = fromJsonTimestamp(object.lastActiveAt);
     return obj;
   },
   toJSON(message: MinerReputation): JsonSafe<MinerReputation> {
     const obj: any = {};
-    message.reputationValue !== undefined &&
-      (obj.reputationValue = message.reputationValue);
+    message.reputationValue !== undefined && (obj.reputationValue = message.reputationValue);
     if (message.cumulativeReward) {
-      obj.cumulativeReward = message.cumulativeReward.map((e) =>
-        e ? Coin.toJSON(e) : undefined,
-      );
+      obj.cumulativeReward = message.cumulativeReward.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.cumulativeReward = [];
     }
     if (message.cumulativePenalty) {
-      obj.cumulativePenalty = message.cumulativePenalty.map((e) =>
-        e ? Coin.toJSON(e) : undefined,
-      );
+      obj.cumulativePenalty = message.cumulativePenalty.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.cumulativePenalty = [];
     }
     message.sRolling !== undefined && (obj.sRolling = message.sRolling);
-    message.lastActiveAt !== undefined &&
-      (obj.lastActiveAt = fromTimestamp(message.lastActiveAt).toISOString());
+    message.lastActiveAt !== undefined && (obj.lastActiveAt = fromTimestamp(message.lastActiveAt).toISOString());
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<MinerReputation>, I>>(
-    object: I,
-  ): MinerReputation {
+  fromPartial<I extends Exact<DeepPartial<MinerReputation>, I>>(object: I): MinerReputation {
     const message = createBaseMinerReputation();
-    message.reputationValue = object.reputationValue ?? '';
-    message.cumulativeReward =
-      object.cumulativeReward?.map((e) => Coin.fromPartial(e)) || [];
-    message.cumulativePenalty =
-      object.cumulativePenalty?.map((e) => Coin.fromPartial(e)) || [];
-    message.sRolling = object.sRolling ?? '';
+    message.reputationValue = object.reputationValue ?? "";
+    message.cumulativeReward = object.cumulativeReward?.map(e => Coin.fromPartial(e)) || [];
+    message.cumulativePenalty = object.cumulativePenalty?.map(e => Coin.fromPartial(e)) || [];
+    message.sRolling = object.sRolling ?? "";
     if (object.lastActiveAt !== undefined && object.lastActiveAt !== null) {
       message.lastActiveAt = Timestamp.fromPartial(object.lastActiveAt);
     }
     return message;
-  },
+  }
 };

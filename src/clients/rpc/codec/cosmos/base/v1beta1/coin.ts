@@ -1,11 +1,11 @@
 /* eslint-disable */
-import _m0 from 'protobufjs/minimal';
-import { isSet, DeepPartial, Exact } from '../../../helpers.js';
-import { JsonSafe } from '../../../json-safe.js';
-export const protobufPackage = 'cosmos.base.v1beta1';
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+export const protobufPackage = "cosmos.base.v1beta1";
 /**
  * Coin defines a token with a denomination and an amount.
- *
+ * 
  * NOTE: The amount field is an Int which implements the custom method
  * signatures required by gogoproto.
  */
@@ -15,7 +15,7 @@ export interface Coin {
 }
 /**
  * DecCoin defines a token with a denomination and a decimal amount.
- *
+ * 
  * NOTE: The amount field is an Dec which implements the custom method
  * signatures required by gogoproto.
  */
@@ -25,17 +25,17 @@ export interface DecCoin {
 }
 function createBaseCoin(): Coin {
   return {
-    denom: '',
-    amount: '',
+    denom: "",
+    amount: ""
   };
 }
 export const Coin = {
-  typeUrl: '/cosmos.base.v1beta1.Coin',
+  typeUrl: "/cosmos.base.v1beta1.Coin",
   encode(message: Coin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.denom !== '') {
+    if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
-    if (message.amount !== '') {
+    if (message.amount !== "") {
       writer.uint32(18).string(message.amount);
     }
     return writer;
@@ -74,27 +74,24 @@ export const Coin = {
   },
   fromPartial<I extends Exact<DeepPartial<Coin>, I>>(object: I): Coin {
     const message = createBaseCoin();
-    message.denom = object.denom ?? '';
-    message.amount = object.amount ?? '';
+    message.denom = object.denom ?? "";
+    message.amount = object.amount ?? "";
     return message;
-  },
+  }
 };
 function createBaseDecCoin(): DecCoin {
   return {
-    denom: '',
-    amount: '',
+    denom: "",
+    amount: ""
   };
 }
 export const DecCoin = {
-  typeUrl: '/cosmos.base.v1beta1.DecCoin',
-  encode(
-    message: DecCoin,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.denom !== '') {
+  typeUrl: "/cosmos.base.v1beta1.DecCoin",
+  encode(message: DecCoin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
-    if (message.amount !== '') {
+    if (message.amount !== "") {
       writer.uint32(18).string(message.amount);
     }
     return writer;
@@ -133,8 +130,8 @@ export const DecCoin = {
   },
   fromPartial<I extends Exact<DeepPartial<DecCoin>, I>>(object: I): DecCoin {
     const message = createBaseDecCoin();
-    message.denom = object.denom ?? '';
-    message.amount = object.amount ?? '';
+    message.denom = object.denom ?? "";
+    message.amount = object.amount ?? "";
     return message;
-  },
+  }
 };

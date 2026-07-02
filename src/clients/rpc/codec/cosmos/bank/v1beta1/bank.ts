@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { Coin } from '../../base/v1beta1/coin.js';
-import _m0 from 'protobufjs/minimal';
-import { isSet, DeepPartial, Exact } from '../../../helpers.js';
-import { JsonSafe } from '../../../json-safe.js';
-export const protobufPackage = 'cosmos.bank.v1beta1';
+import { Coin } from "../../base/v1beta1/coin";
+import * as _m0 from "protobufjs/minimal";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+export const protobufPackage = "cosmos.bank.v1beta1";
 /** Params defines the parameters for the bank module. */
 export interface Params {
   sendEnabled: SendEnabled[];
@@ -80,15 +80,12 @@ export interface Metadata {
 function createBaseParams(): Params {
   return {
     sendEnabled: [],
-    defaultSendEnabled: false,
+    defaultSendEnabled: false
   };
 }
 export const Params = {
-  typeUrl: '/cosmos.bank.v1beta1.Params',
-  encode(
-    message: Params,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.Params",
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.sendEnabled) {
       SendEnabled.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -119,48 +116,37 @@ export const Params = {
   },
   fromJSON(object: any): Params {
     const obj = createBaseParams();
-    if (Array.isArray(object?.sendEnabled))
-      obj.sendEnabled = object.sendEnabled.map((e: any) =>
-        SendEnabled.fromJSON(e),
-      );
-    if (isSet(object.defaultSendEnabled))
-      obj.defaultSendEnabled = Boolean(object.defaultSendEnabled);
+    if (Array.isArray(object?.sendEnabled)) obj.sendEnabled = object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e));
+    if (isSet(object.defaultSendEnabled)) obj.defaultSendEnabled = Boolean(object.defaultSendEnabled);
     return obj;
   },
   toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     if (message.sendEnabled) {
-      obj.sendEnabled = message.sendEnabled.map((e) =>
-        e ? SendEnabled.toJSON(e) : undefined,
-      );
+      obj.sendEnabled = message.sendEnabled.map(e => e ? SendEnabled.toJSON(e) : undefined);
     } else {
       obj.sendEnabled = [];
     }
-    message.defaultSendEnabled !== undefined &&
-      (obj.defaultSendEnabled = message.defaultSendEnabled);
+    message.defaultSendEnabled !== undefined && (obj.defaultSendEnabled = message.defaultSendEnabled);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.sendEnabled =
-      object.sendEnabled?.map((e) => SendEnabled.fromPartial(e)) || [];
+    message.sendEnabled = object.sendEnabled?.map(e => SendEnabled.fromPartial(e)) || [];
     message.defaultSendEnabled = object.defaultSendEnabled ?? false;
     return message;
-  },
+  }
 };
 function createBaseSendEnabled(): SendEnabled {
   return {
-    denom: '',
-    enabled: false,
+    denom: "",
+    enabled: false
   };
 }
 export const SendEnabled = {
-  typeUrl: '/cosmos.bank.v1beta1.SendEnabled',
-  encode(
-    message: SendEnabled,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.denom !== '') {
+  typeUrl: "/cosmos.bank.v1beta1.SendEnabled",
+  encode(message: SendEnabled, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
     if (message.enabled === true) {
@@ -200,25 +186,23 @@ export const SendEnabled = {
     message.enabled !== undefined && (obj.enabled = message.enabled);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<SendEnabled>, I>>(
-    object: I,
-  ): SendEnabled {
+  fromPartial<I extends Exact<DeepPartial<SendEnabled>, I>>(object: I): SendEnabled {
     const message = createBaseSendEnabled();
-    message.denom = object.denom ?? '';
+    message.denom = object.denom ?? "";
     message.enabled = object.enabled ?? false;
     return message;
-  },
+  }
 };
 function createBaseInput(): Input {
   return {
-    address: '',
-    coins: [],
+    address: "",
+    coins: []
   };
 }
 export const Input = {
-  typeUrl: '/cosmos.bank.v1beta1.Input',
+  typeUrl: "/cosmos.bank.v1beta1.Input",
   encode(message: Input, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== '') {
+    if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     for (const v of message.coins) {
@@ -249,15 +233,14 @@ export const Input = {
   fromJSON(object: any): Input {
     const obj = createBaseInput();
     if (isSet(object.address)) obj.address = String(object.address);
-    if (Array.isArray(object?.coins))
-      obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.coins)) obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
   toJSON(message: Input): JsonSafe<Input> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
-      obj.coins = message.coins.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.coins = message.coins.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.coins = [];
     }
@@ -265,24 +248,21 @@ export const Input = {
   },
   fromPartial<I extends Exact<DeepPartial<Input>, I>>(object: I): Input {
     const message = createBaseInput();
-    message.address = object.address ?? '';
-    message.coins = object.coins?.map((e) => Coin.fromPartial(e)) || [];
+    message.address = object.address ?? "";
+    message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseOutput(): Output {
   return {
-    address: '',
-    coins: [],
+    address: "",
+    coins: []
   };
 }
 export const Output = {
-  typeUrl: '/cosmos.bank.v1beta1.Output',
-  encode(
-    message: Output,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.address !== '') {
+  typeUrl: "/cosmos.bank.v1beta1.Output",
+  encode(message: Output, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     for (const v of message.coins) {
@@ -313,15 +293,14 @@ export const Output = {
   fromJSON(object: any): Output {
     const obj = createBaseOutput();
     if (isSet(object.address)) obj.address = String(object.address);
-    if (Array.isArray(object?.coins))
-      obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.coins)) obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
   toJSON(message: Output): JsonSafe<Output> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
-      obj.coins = message.coins.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.coins = message.coins.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.coins = [];
     }
@@ -329,22 +308,19 @@ export const Output = {
   },
   fromPartial<I extends Exact<DeepPartial<Output>, I>>(object: I): Output {
     const message = createBaseOutput();
-    message.address = object.address ?? '';
-    message.coins = object.coins?.map((e) => Coin.fromPartial(e)) || [];
+    message.address = object.address ?? "";
+    message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseSupply(): Supply {
   return {
-    total: [],
+    total: []
   };
 }
 export const Supply = {
-  typeUrl: '/cosmos.bank.v1beta1.Supply',
-  encode(
-    message: Supply,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.Supply",
+  encode(message: Supply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.total) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -369,14 +345,13 @@ export const Supply = {
   },
   fromJSON(object: any): Supply {
     const obj = createBaseSupply();
-    if (Array.isArray(object?.total))
-      obj.total = object.total.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.total)) obj.total = object.total.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
   toJSON(message: Supply): JsonSafe<Supply> {
     const obj: any = {};
     if (message.total) {
-      obj.total = message.total.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.total = message.total.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.total = [];
     }
@@ -384,24 +359,21 @@ export const Supply = {
   },
   fromPartial<I extends Exact<DeepPartial<Supply>, I>>(object: I): Supply {
     const message = createBaseSupply();
-    message.total = object.total?.map((e) => Coin.fromPartial(e)) || [];
+    message.total = object.total?.map(e => Coin.fromPartial(e)) || [];
     return message;
-  },
+  }
 };
 function createBaseDenomUnit(): DenomUnit {
   return {
-    denom: '',
+    denom: "",
     exponent: 0,
-    aliases: [],
+    aliases: []
   };
 }
 export const DenomUnit = {
-  typeUrl: '/cosmos.bank.v1beta1.DenomUnit',
-  encode(
-    message: DenomUnit,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.denom !== '') {
+  typeUrl: "/cosmos.bank.v1beta1.DenomUnit",
+  encode(message: DenomUnit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
     if (message.exponent !== 0) {
@@ -439,64 +411,57 @@ export const DenomUnit = {
     const obj = createBaseDenomUnit();
     if (isSet(object.denom)) obj.denom = String(object.denom);
     if (isSet(object.exponent)) obj.exponent = Number(object.exponent);
-    if (Array.isArray(object?.aliases))
-      obj.aliases = object.aliases.map((e: any) => String(e));
+    if (Array.isArray(object?.aliases)) obj.aliases = object.aliases.map((e: any) => String(e));
     return obj;
   },
   toJSON(message: DenomUnit): JsonSafe<DenomUnit> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
-    message.exponent !== undefined &&
-      (obj.exponent = Math.round(message.exponent));
+    message.exponent !== undefined && (obj.exponent = Math.round(message.exponent));
     if (message.aliases) {
-      obj.aliases = message.aliases.map((e) => e);
+      obj.aliases = message.aliases.map(e => e);
     } else {
       obj.aliases = [];
     }
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<DenomUnit>, I>>(
-    object: I,
-  ): DenomUnit {
+  fromPartial<I extends Exact<DeepPartial<DenomUnit>, I>>(object: I): DenomUnit {
     const message = createBaseDenomUnit();
-    message.denom = object.denom ?? '';
+    message.denom = object.denom ?? "";
     message.exponent = object.exponent ?? 0;
-    message.aliases = object.aliases?.map((e) => e) || [];
+    message.aliases = object.aliases?.map(e => e) || [];
     return message;
-  },
+  }
 };
 function createBaseMetadata(): Metadata {
   return {
-    description: '',
+    description: "",
     denomUnits: [],
-    base: '',
-    display: '',
-    name: '',
-    symbol: '',
+    base: "",
+    display: "",
+    name: "",
+    symbol: ""
   };
 }
 export const Metadata = {
-  typeUrl: '/cosmos.bank.v1beta1.Metadata',
-  encode(
-    message: Metadata,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.description !== '') {
+  typeUrl: "/cosmos.bank.v1beta1.Metadata",
+  encode(message: Metadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
     for (const v of message.denomUnits) {
       DenomUnit.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    if (message.base !== '') {
+    if (message.base !== "") {
       writer.uint32(26).string(message.base);
     }
-    if (message.display !== '') {
+    if (message.display !== "") {
       writer.uint32(34).string(message.display);
     }
-    if (message.name !== '') {
+    if (message.name !== "") {
       writer.uint32(42).string(message.name);
     }
-    if (message.symbol !== '') {
+    if (message.symbol !== "") {
       writer.uint32(50).string(message.symbol);
     }
     return writer;
@@ -536,8 +501,7 @@ export const Metadata = {
   fromJSON(object: any): Metadata {
     const obj = createBaseMetadata();
     if (isSet(object.description)) obj.description = String(object.description);
-    if (Array.isArray(object?.denomUnits))
-      obj.denomUnits = object.denomUnits.map((e: any) => DenomUnit.fromJSON(e));
+    if (Array.isArray(object?.denomUnits)) obj.denomUnits = object.denomUnits.map((e: any) => DenomUnit.fromJSON(e));
     if (isSet(object.base)) obj.base = String(object.base);
     if (isSet(object.display)) obj.display = String(object.display);
     if (isSet(object.name)) obj.name = String(object.name);
@@ -546,12 +510,9 @@ export const Metadata = {
   },
   toJSON(message: Metadata): JsonSafe<Metadata> {
     const obj: any = {};
-    message.description !== undefined &&
-      (obj.description = message.description);
+    message.description !== undefined && (obj.description = message.description);
     if (message.denomUnits) {
-      obj.denomUnits = message.denomUnits.map((e) =>
-        e ? DenomUnit.toJSON(e) : undefined,
-      );
+      obj.denomUnits = message.denomUnits.map(e => e ? DenomUnit.toJSON(e) : undefined);
     } else {
       obj.denomUnits = [];
     }
@@ -563,13 +524,12 @@ export const Metadata = {
   },
   fromPartial<I extends Exact<DeepPartial<Metadata>, I>>(object: I): Metadata {
     const message = createBaseMetadata();
-    message.description = object.description ?? '';
-    message.denomUnits =
-      object.denomUnits?.map((e) => DenomUnit.fromPartial(e)) || [];
-    message.base = object.base ?? '';
-    message.display = object.display ?? '';
-    message.name = object.name ?? '';
-    message.symbol = object.symbol ?? '';
+    message.description = object.description ?? "";
+    message.denomUnits = object.denomUnits?.map(e => DenomUnit.fromPartial(e)) || [];
+    message.base = object.base ?? "";
+    message.display = object.display ?? "";
+    message.name = object.name ?? "";
+    message.symbol = object.symbol ?? "";
     return message;
-  },
+  }
 };
